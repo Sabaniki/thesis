@@ -1,0 +1,27 @@
+Abstract of Bachelor's Thesis - Academic Year 2023
+\begin{center}
+\begin{large}
+\begin{tabular}{|p{0.97\linewidth}|}
+    \hline
+      \etitle \\
+    \hline
+\end{tabular}
+\end{large}
+\end{center}
+
+~ \\
+This paper proposes a new SRv6 End behavior, called End.AN.NF, integrating Linux netfilter as a network function for service function chaining by Segment Routing (SR).
+End.AN.NF allows netfilter-based applications to be executed as SR-Aware applications without modification, as it applies netfilter to inner packets encapsulated in SRv6 while performing the basic SRv6 End behavior.
+Furthermore, End.AN.NF utilizes the argument of the segment identifiers to mark packets.
+Consequently, this enables netfilter-based applications to match the marks on packet buffers and change rules to be applied.
+We implemented End.AN.NF on the Linux kernel and evaluated its performance.
+The evaluation shows that End.AN.NF achieves 27\% higher throughput and 3.0 microseconds lower latency than applying netfilter to SRv6-encapsulated inner packets by End.DT4 and H.Encaps.
+~ \\
+Keywords : \\
+\underline{1. Service Function Chaining},
+\underline{2. Segment Routing}
+\underline{3. SRv6}
+\begin{flushright}
+\edept \\
+\eauthor
+\end{flushright}

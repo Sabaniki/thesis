@@ -1,0 +1,32 @@
+卒業論文要旨 - 2023年度（令和5年度）
+\begin{center}
+\begin{large}
+\begin{tabular}{|M{0.97\linewidth}|}
+    \hline
+      \title \\
+    \hline
+\end{tabular}
+\end{large}
+\end{center}
+
+~ \\
+本論文では，End.AN.NF という新しい Segment Routing over IPv6 (SRv6) End behavior を提案する．
+End.AN.NF は Linux netfilter を Linux の SRv6 ルーティングインフラストラクチャへ統合する事ができる．
+セグメントルーティング (SR) を利用したサービスファンクションチェイニング環境において，End.AN.NF は，
+Linux netfilter を SR に対応したネットワークファンクションとして扱えるようにする．
+End.AN.NF を利用する際，netfilter を利用して作成されたアプリケーションの実装を変える必要はなく，
+End.AN.NF は SRv6 の基本処理である End behavior を実行しながら，SRv6 でカプセル化された内部のパケットへ netfilter を適用できる．
+さらに，End.AN.NF は segment id 内の引数部分を利用して，パケットにマークを付けることができる．
+したがって，netfilter を利用して作成されたアプリケーションは End.AN.NF がパケットバッファに付与したマークを照合することで，適用するルールを変更できる．
+我々は End.AN.NF を Linux kernel に実装し，その性能評価を行った．
+計測の結果， End.AN.NF は End.DT4 と H.Encaps を使って SRv6 でカプセル化された内部パケットに netfilter を適用する方法に比べ，
+27\% 高いスループット，及び 3.0 マイクロ秒低いレイテンシを実現した．
+~ \\
+キーワード:\\
+\underline{1. Service Function Chaining},
+\underline{2. Segment Routing}
+\underline{3. SRv6}
+\begin{flushright}
+\dept \\
+\author
+\end{flushright}

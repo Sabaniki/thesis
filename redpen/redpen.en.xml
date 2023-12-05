@@ -2,7 +2,7 @@
     <validators>
         <!--Rules on sentence length-->
         <validator name="SentenceLength">
-            <property name="max_len" value="120"/>
+            <property name="max_len" value="250"/>
         </validator>
         <validator name="CommaNumber" />
         <validator name="HeaderLength" />
