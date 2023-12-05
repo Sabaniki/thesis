@@ -1,0 +1,74 @@
+{
+    "latex-workshop.latex.recipes": [
+        {
+            "name": "pdf",
+            "tools": [
+                "make-pdf",
+            ]
+        },
+        {
+            "name": "redpen",
+            "tools": [
+                "make-redpen",
+            ]
+        },
+        {
+            "name": "diff",
+            "tools": [
+                "make-diff",
+            ]
+        },
+    ],
+    "latex-workshop.latex.outDir": "%DIR%/output",
+    "latex-workshop.latex.tools": [
+        {
+            "name": "make-pdf",
+            "command": "make",
+            "args": [
+                "all",
+            ],
+        },
+        {
+            "name": "make-redpen",
+            "command": "make",
+            "args": [
+                "redpen",
+            ],
+        },
+        {
+            "name": "make-snapshot",
+            "command": "make",
+            "args": [
+                "snapshot",
+            ],
+        },
+        {
+            "name": "make-diff",
+            "command": "make",
+            "args": [
+                "diff",
+            ],
+        },
+    ],
+    "latex-workshop.view.pdf.viewer": "tab",
+    "editor.renderControlCharacters": true,
+    "latex-workshop.message.badbox.show": true,
+    "latex-workshop.latex.autoBuild.run": "onSave",
+    "editor.quickSuggestions": {
+        "other": true,
+        "comments": true, // !!!
+        "strings": true // !!!
+    },
+    "[latex]": {
+        "editor.formatOnPaste": false,
+        "editor.suggestSelection": "recentlyUsedByPrefix",
+        "editor.quickSuggestions": {
+            "other": "on",
+            "comments": "off",
+            "strings": "off"
+        }
+    },
+    "workbench.colorCustomizations": {
+        "editorCursor.foreground": "#FFFFFF"
+    }
+}
