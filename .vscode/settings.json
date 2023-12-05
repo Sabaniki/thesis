@@ -18,6 +18,12 @@
                 "make-snapshot",
             ]
         },
+        {
+            "name": "diff",
+            "tools": [
+                "make-diff",
+            ]
+        },
     ],
     "latex-workshop.latex.outDir": "%DIR%/output",
     "latex-workshop.latex.tools": [
@@ -40,6 +46,13 @@
             "command": "make",
             "args": [
                 "snapshot",
+            ],
+        },
+        {
+            "name": "make-diff",
+            "command": "make",
+            "args": [
+                "diff",
             ],
         },
     ],
