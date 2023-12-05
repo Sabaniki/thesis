@@ -13,9 +13,9 @@
             ]
         },
         {
-            "name": "diff",
+            "name": "snapshot",
             "tools": [
-                "make-diff",
+                "make-snapshot",
             ]
         },
     ],
@@ -40,13 +40,6 @@
             "command": "make",
             "args": [
                 "snapshot",
-            ],
-        },
-        {
-            "name": "make-diff",
-            "command": "make",
-            "args": [
-                "diff",
             ],
         },
     ],

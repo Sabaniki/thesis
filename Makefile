@@ -3,7 +3,9 @@ SRC_DIR = ./src
 # SRC_DIR = ./
 SRCS = $(shell ls $(SRC_DIR)/*.tex)
 
-MAIN_TEX = ./thesis.tex
+BASE = thesis
+MAIN_TEX = ./$(BASE).tex
+DATE = `date "+%Y%m%d%H"`
 MAIN_PDF = $(MAIN_TEX:$(SRC_DIR)/%.tex=$(BUILD_DIR)/%.pdf)
 
 REDPEN := $(if $(REDPEN),$(REDPEN),redpen --conf redpen-conf.xml --result-format xml)
@@ -18,6 +20,10 @@ $(MAIN_PDF): $(BUILD_DIR)/$(SRC_DIR)
 
 $(BUILD_DIR)/$(SRC_DIR):
 	mkdir -p $@
+
+snapshot: build
+	mkdir -p output/snapshot
+	cp $(MAIN_PDF) output/snapshot/$(BASE)_$(DATE).pdf
 
 .PHONY: watch
 watch: PREVIEW_CONTINUOUSLY=-pvc
