@@ -1,0 +1,261 @@
+\documentclass[12pt]{jreport}
+%DIF LATEXDIFF DIFFERENCE FILE
+%DIF DEL /var/folders/6x/649z9rxj5q10kv2l6tchpb3h0000gn/T/0Sd60c_QK6/latexdiff-vc-main/thesis.tex   Tue Dec  5 15:20:02 2023
+%DIF ADD thesis.tex                                                                                 Tue Dec  5 15:36:21 2023
+\usepackage{comment}
+\usepackage{./sty/eclepsf}
+\usepackage{tascmac}
+\usepackage{tabularx}
+\usepackage{listliketab}
+\usepackage[longnamesfirst]{natbib}
+\usepackage[dvipdfmx]{graphics}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage[dvipdfmx]{color}
+\usepackage{subfigure}
+\usepackage{alltt}
+\usepackage{here}
+\usepackage{afterpage}
+\usepackage{./sty/ncodeline}
+%\usepackage[dvipdfmx, colorlinks, breaklinks,%
+\usepackage[dvipdfmx, breaklinks,%
+bookmarks=true, bookmarksnumbered=true,%
+bookmarkstype=toc, bookmarksopen=true,bookmarksopenlevel=3,%
+pdftitle={RG},%
+]{hyperref}
+\usepackage{bookmark}
+
+\AtBeginDvi{\special{pdf:tounicode EUC-UCS2}}
+
+\usepackage{fancyhdr}
+
+\usepackage{./sty/doxygenorig}
+
+\usepackage{indentfirst}
+\usepackage{url}
+\usepackage{listings,./sty/jlisting}
+
+\def\lstlistingname{プログラム}
+
+\lstset{%
+ language={C++},
+ %backgroundcolor={\color[gray]{.85}},%
+ basicstyle={\small\ttfamily},%
+ identifierstyle={\small},%
+ commentstyle={\small\itshape},%
+ keywordstyle={\small\bfseries},%
+ ndkeywordstyle={\small\ttfamily},%
+ stringstyle={\small\ttfamily},
+ frame={tb},
+ framesep=1zw,
+ breaklines=true,
+ numbers=left,%
+ xrightmargin=0zw,%
+ xleftmargin=1.5zw,%
+ numberstyle={\scriptsize},%
+ stepnumber=1,
+ numbersep=1zw,%
+ lineskip=-0.5ex%
+}
+
+\usepackage{amssymb}
+%\usepackage{supertabular,multirow}
+
+\usepackage{array}
+\newcolumntype{M}[1]{>{\centering\arraybackslash}m{#1}}
+
+% A4  size: 297mm*210mm %1pt = 0.35mm
+\setlength{\topmargin}{-3.4mm} % 10pt 25.4mm - 3.4mm = 22mm
+\setlength{\oddsidemargin}{-0.4mm} % 25.4mm - 0.4mm = 25mm
+\setlength{\evensidemargin}{-0.4mm} % 25.4mm - 0.4mm = 25mm
+\setlength{\textheight}{231mm} % 660pt % original is 225.75mm 645pt
+\setlength{\textwidth}{160mm} % 457pt
+
+\renewcommand{\topfraction}{.99}
+\renewcommand{\textfraction}{.0}
+\renewcommand{\floatpagefraction}{.99}
+\renewcommand{\bibname}{参考文献}
+
+
+\pagestyle{fancy}
+\lhead[]{}
+
+\makeatletter
+\def\chaptermark#1{\markboth {\ifnum \c@secnumdepth>\m@ne
+\@chapapp\ \thechapter \@chappos\ \fi #1}{}}
+\makeatother
+
+% タイトル
+\def\title{タイトル}
+% 英語タイトル
+\def\etitle{title}
+% 著者(日本語)
+\def\author{澤田 開杜}
+% 著者(英語)
+\def\eauthor{Kaito Sawada}
+% 学部・研究科
+\def\dept{慶應義塾大学 環境情報学部}
+% 学部・研究科(英語)
+\def\edept{Keio University Bachelor of Arts in Environment and Information Studies}
+%DIF PREAMBLE EXTENSION ADDED BY LATEXDIFF
+%DIF CFONT PREAMBLE %DIF PREAMBLE
+\RequirePackage{color}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
+\DeclareOldFontCommand{\sf}{\normalfont\sffamily}{\mathsf} %DIF PREAMBLE
+\providecommand{\DIFaddtex}[1]{{\protect\color{blue} \sf #1}} %DIF PREAMBLE
+\providecommand{\DIFdeltex}[1]{{\protect\color{red} \scriptsize #1}} %DIF PREAMBLE
+%DIF SAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddbegin}{} %DIF PREAMBLE
+\providecommand{\DIFaddend}{} %DIF PREAMBLE
+\providecommand{\DIFdelbegin}{} %DIF PREAMBLE
+\providecommand{\DIFdelend}{} %DIF PREAMBLE
+\providecommand{\DIFmodbegin}{} %DIF PREAMBLE
+\providecommand{\DIFmodend}{} %DIF PREAMBLE
+%DIF FLOATSAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddFL}[1]{\DIFadd{#1}} %DIF PREAMBLE
+\providecommand{\DIFdelFL}[1]{\DIFdel{#1}} %DIF PREAMBLE
+\providecommand{\DIFaddbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFaddendFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelendFL}{} %DIF PREAMBLE
+%DIF HYPERREF PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFadd}[1]{\texorpdfstring{\DIFaddtex{#1}}{#1}} %DIF PREAMBLE
+\providecommand{\DIFdel}[1]{\texorpdfstring{\DIFdeltex{#1}}{}} %DIF PREAMBLE
+%DIF COLORLISTINGS PREAMBLE %DIF PREAMBLE
+\RequirePackage{listings} %DIF PREAMBLE
+\RequirePackage{color} %DIF PREAMBLE
+\lstdefinelanguage{DIFcode}{ %DIF PREAMBLE
+%DIF DIFCODE_CFONT %DIF PREAMBLE
+  moredelim=[il][\color{red}\scriptsize]{\%DIF\ <\ }, %DIF PREAMBLE
+  moredelim=[il][\color{blue}\sffamily]{\%DIF\ >\ } %DIF PREAMBLE
+} %DIF PREAMBLE
+\lstdefinestyle{DIFverbatimstyle}{ %DIF PREAMBLE
+	language=DIFcode, %DIF PREAMBLE
+	basicstyle=\ttfamily, %DIF PREAMBLE
+	columns=fullflexible, %DIF PREAMBLE
+	keepspaces=true %DIF PREAMBLE
+} %DIF PREAMBLE
+\lstnewenvironment{DIFverbatim}{\lstset{style=DIFverbatimstyle}}{} %DIF PREAMBLE
+\lstnewenvironment{DIFverbatim*}{\lstset{style=DIFverbatimstyle,showspaces=true}}{} %DIF PREAMBLE
+%DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF
+
+\begin{document}
+
+\pagenumbering{roman}
+\begin{titlepage}
+  \begin{center}
+    \begin{large}
+      卒業論文   2023年度（令和5年度）\\
+      \vspace{24pt}
+      {\Huge \title}
+    \end{large}
+  \end{center}
+  \vspace{40em}
+  \begin{flushright}
+    \large \dept\\
+    \author
+  \end{flushright}
+\end{titlepage}
+
+\thispagestyle{empty}
+
+
+卒業論文要旨 - 2023年度（令和5年度）
+\begin{center}
+\begin{large}
+\begin{tabular}{|M{0.97\linewidth}|}
+    \hline
+      \title \\
+    \hline
+\end{tabular}
+\end{large}
+\end{center}
+
+~ \\
+
+アブストラクト
+あああああああああああああああああああああああああああああああああああああああああああああああああ
+
+~ \\
+キーワード:\\
+\underline{1. キーワード1},
+\underline{2. キーワード2},
+\begin{flushright}
+\dept \\
+\author
+\end{flushright}
+
+\thispagestyle{plain}
+\clearpage
+
+Abstract of Bachelor's Thesis - Academic Year 2019
+\begin{center}
+\begin{large}
+\begin{tabular}{|p{0.97\linewidth}|}
+    \hline
+      \etitle \\
+    \hline
+\end{tabular}
+\end{large}
+\end{center}
+
+~ \\
+This is abstract
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+~ \\
+Keywords : \\
+\underline{1. kyword1},
+\underline{2. keyword2}
+\begin{flushright}
+\edept \\
+\eauthor
+\end{flushright}
+
+\thispagestyle{plain}
+\clearpage
+
+\tableofcontents\thispagestyle{plain} %目次
+\clearpage
+\listoffigures\thispagestyle{plain} %図目次
+\clearpage
+\listoftables\thispagestyle{plain} %表目次
+\clearpage
+
+\pagenumbering{arabic}
+\chapter{序論}
+\label{chap:introduction}
+
+\section{背景}
+\label{section:background}
+
+\section{本論文の目的}
+
+
+\section{本論文の構成}
+
+本論文における以降の構成は次の通りである。
+
+\DIFdelbegin \DIFdel{aaa
+}\DIFdelend \DIFaddbegin \DIFadd{testtesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttesttest
+}\DIFaddend % \input{src/020_related_works.ja}
+% \input{src/030_design.ja}
+% \input{src/040_implementation.ja}
+% \input{src/050_evaluation.ja}
+% \input{src/060_conclusion.ja}
+% %\input{src/appendix}
+% \input{src/900_acknowledgement.ja}
+
+\renewcommand{\thechapter}{\Alph{chapter}}
+\setcounter{chapter}{0}
+\vspace{-5mm}
+
+
+\bibliographystyle{unsrt}\pagestyle{plain}
+\bibliography{bib/cites}\pagestyle{plain}
+\thispagestyle{plain}%bibtex
+
+
+\end{document}
+
+%%% Local Variables:
+%%% mode: japanese-latex
+%%% TeX-master: t
+%%% End:

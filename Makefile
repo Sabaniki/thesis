@@ -8,6 +8,10 @@ MAIN_TEX = ./$(BASE).tex
 DATE = `date "+%Y%m%d%H"`
 MAIN_PDF = $(MAIN_TEX:$(SRC_DIR)/%.tex=$(BUILD_DIR)/%.pdf)
 
+DIFFTO = main
+ORIGINAL = $(BASE)-diff$(DIFFTO).tex
+DIFFTEX = $(subst ^,_,$(subst ~,_,$(ORIGINAL)))
+
 REDPEN := $(if $(REDPEN),$(REDPEN),redpen --conf redpen-conf.xml --result-format xml)
 all: build
 
@@ -31,6 +35,24 @@ watch: build
 
 .PHONY: redpen
 redpen: redpen.ja #redpen.en
+
+diff:
+	latexdiff-vc \
+		-t CFONT \
+		--exclude-textcmd=section,subsection	\
+		--exclude-safecmd="textfix[a-z]"	\
+		--graphics-markup=off			\
+		--add-to-config "PICTUREENV=figure[*]?"	\
+		--force --flatten			\
+		--git -r $(DIFFTO) $(BASE).tex
+	mv $(ORIGINAL) $(DIFFTEX)
+	latexmk \
+		-pdfdvi $(PREVIEW_CONTINUOUSLY) \
+		-output-directory=output/diff $(DIFFTEX)
+
+
+diffclean:
+	rm -rf $(BASE)-diff*
 
 redpen.%: $(shell echo $(SRC_DIR)/*.%.tex)
 	$(REDPEN) \
