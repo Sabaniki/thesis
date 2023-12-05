@@ -49,7 +49,7 @@ diff:
 	latexmk \
 		-pdfdvi $(PREVIEW_CONTINUOUSLY) \
 		-output-directory=output/diff $(DIFFTEX)
-		-use-make $(MAIN_TEX) 
+
 
 diffclean:
 	rm -rf $(BASE)-diff*
