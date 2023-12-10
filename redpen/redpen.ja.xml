@@ -10,7 +10,11 @@
         <!--Rules on expressions-->
         <validator name="SuccessiveWord" />
         <validator name="JapaneseStyle" />
-        <validator name="InvalidExpression" />
+        <validator name="InvalidExpression">
+            <property name="list" value="を行う"/>
+        </validator>
+        <validator name="InvalidWord">
+        </validator>
         <validator name="JapaneseExpressionVariation" level="Info"/>
         <validator name="DoubleNegative" />
         <validator name="Okurigana"/>
@@ -20,15 +24,14 @@
         <!-- <validator name="LongKanjiChain" /> -->
         <validator name="DoubledConjunctiveParticleGa" />
         <!--<validator name="SuggestExpression" />-->
-
         <!--Rules on symbols and terminologies-->
-        <!-- <validator name="InvalidSymbol"/> -->
+        <validator name="InvalidSymbol"/>
         <validator name="KatakanaEndHyphen"/>
         <validator name="KatakanaSpellCheck" level="info"/>
         <!-- <validator name="SpaceBetweenAlphabeticalWord" /> -->
         <validator name="ParenthesizedSentence">
-            <property name="max_count" value="3"/>
-            <property name="max_nesting_level" value="1"/>
+            <property name="max_count" value="4"/>
+            <property name="max_nesting_level" value="2"/>
             <property name="max_length" value="10"/>
         </validator>
 
@@ -43,9 +46,10 @@
         <validator name="ListLevel" />
     </validators>
     <symbols>
-        <symbol name="FULL_STOP" value="．" invalid_chars="。." before-space="false" after-space="false"/>
-        <symbol name="COMMA" value="，" invalid_chars="," before-space="false" after-space="false"/>
-        <!-- <symbol name="LEFT_PARENTHESIS" value="(" invalid_chars="（" before-space="true" after-space="false"/> -->
+        <!-- <symbol name="FULL_STOP" value="．" invalid_chars="。." before-space="false" after-space="false"/> -->
+        <!-- <symbol name="COMMA" value="，" invalid_chars="," before-space="false" after-space="false"/> -->
+        <symbol name="LEFT_PARENTHESIS" value="(" invalid_chars="（" before-space="true" after-space="false"/>
         <symbol name="RIGHT_PARENTHESIS" value=")" invalid_chars="）" before-space="true" after-space="false"/>
+        <symbol name="BACKSLASH" value="\"/>
     </symbols>
 </redpen-conf>

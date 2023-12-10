@@ -1,3 +1,206 @@
+@ARTICLE{orcher-for-sfc,
+  author={Hawilo, Hassan and Jammal, Manar and Shami, Abdallah},
+  journal={IEEE Journal on Selected Areas in Communications}, 
+  title={Network Function Virtualization-Aware Orchestrator for Service Function Chaining Placement in the Cloud}, 
+  year={2019},
+  volume={37},
+  number={3},
+  pages={643-655},
+  doi={10.1109/JSAC.2019.2895226}}
+
+@inproceedings{verify-sfc,
+author = {Shiiba, Ryusei and Kobayashi, Satoru and Akashi, Osamu and Fukuda, Kensuke},
+title = {Verifying Network Properties in SRv6 Based Service Function Chaining},
+year = {2021},
+isbn = {9781450391849},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3497777.3498546},
+doi = {10.1145/3497777.3498546},
+abstract = {Segment Routing over IPv6 (SRv6) is a simple and scalable protocol for building service function chaining (SFC) on IPv6 data plane. Despite the benefits, managing the data plane of service chains in SRv6 is an error-prone task for network operators, especially in large-scale data center networks. Data plane verification is a promising approach to formally verify the operator requirements. However, the existing approaches do not fully support header modifications with a variable length header in SRv6 and network functions for the service chains. In this paper, we propose a new data plane verification approach for the service chain management. Unlike the existing works, our proposed data plane model for the verification naturally includes header modifications in SRv6 and network functions for the service chains. On the basis of the model, we develop a search-based verification technique for two fundamental network properties: network reachability and isolation of a service chain from the others. To confirm the appropriateness of the approach, we implement a data plane verifier based on the model. Using the verifier, we demonstrate the effectiveness of our approach in two case examples. Through the demonstration, we show that our approach is expressive enough to verify network properties for safely managing the service chains},
+booktitle = {Proceedings of the 16th Asian Internet Engineering Conference},
+pages = {18–26},
+numpages = {9},
+keywords = {Segment Routing over IPv6 (SRv6), Service Function Chaining, Data plane verification},
+location = {Virtual Event, Japan},
+series = {AINTEC '21}
+}
+
+@article{survey-on-sfc,
+title = {A survey on service function chaining},
+journal = {Journal of Network and Computer Applications},
+volume = {75},
+pages = {138-155},
+year = {2016},
+issn = {1084-8045},
+doi = {https://doi.org/10.1016/j.jnca.2016.09.001},
+url = {https://www.sciencedirect.com/science/article/pii/S1084804516301989},
+author = {Deval Bhamare and Raj Jain and Mohammed Samaka and Aiman Erbad},
+keywords = {Service function chaining, Network function virtualization, Optimal placement, SDN, Survey, Multi-cloud},
+abstract = {Cloud computing is gaining significant attention and virtualized datacenters are becoming popular as a cost-effective infrastructure. The network services are transitioning from a host-centric to a data-centric model moving the data and the computational resources closer to the end users. To meet the dynamic user demands, network operators have chosen to use elastic virtual resources to implement network services over static rigid physical model. With the advent of network function virtualization (NFV), network services instances are provisioned across multiple clouds for performance and load balancing purposes. Interconnection of these instances to form a complete end-to-end network service is complex, time consuming and expensive task. Service function chaining (SFC) is a mechanism that allows various service functions to be connected to each to form a service enabling carriers to benefit from virtualized software defined infrastructure. SFC is an enabler for NFV, providing a flexible and economical alternative to today's static environment for Cloud Service providers (CSPs), Application Service Providers (ASPs) and Internet Service Providers (ISPs). This paper provides a closer look at the current SFC architecture and a survey of the recent developments in SFC including its relevance with NFV to help determine the future research directions and the standardization efforts of SFC. Finally, the paper discusses open research topics in relevance with the SFC architecture and demonstrates a need for an analytical model for the SFC architecture to achieve the optimal performance.}
+}
+
+@misc{rfc8986,
+    series =    {Request for Comments},
+    number =    8986,
+    howpublished =  {RFC 8986},
+    publisher = {RFC Editor},
+    doi =       {10.17487/RFC8986},
+    url =       {https://www.rfc-editor.org/info/rfc8986},
+        author =    {Clarence Filsfils and Pablo Camarillo and John Leddy and Daniel Voyer and Satoru Matsushima and Zhenbin Li},
+    title =     {{Segment Routing over IPv6 (SRv6) Network Programming}},
+    pagetotal = 40,
+    year =      2021,
+    month =     feb,
+    abstract =  {The Segment Routing over IPv6 (SRv6) Network Programming framework enables a network operator or an application to specify a packet processing program by encoding a sequence of instructions in the IPv6 packet header. Each instruction is implemented on one or several nodes in the network and identified by an SRv6 Segment Identifier in the packet. This document defines the SRv6 Network Programming concept and specifies the base set of SRv6 behaviors that enables the creation of interoperable overlays with underlay optimization.},
+}
+
+@techreport{draft-scexp,
+    number =    {draft-upa-srv6-service-chaining-exp-00},
+    type =      {Internet-Draft},
+    institution =   {Internet Engineering Task Force},
+    publisher = {Internet Engineering Task Force},
+    note =      {Work in Progress},
+    url =       {https://datatracker.ietf.org/doc/draft-upa-srv6-service-chaining-exp/00/},
+        author =    {Ryo Nakamura and Yukito Ueno and Teppei Kamata},
+    title =     {{An Experiment of SRv6 Service Chaining at Interop Tokyo 2019 ShowNet}},
+    pagetotal = 10,
+    year =      2019,
+    month =     oct,
+    day =       31,
+    abstract =  {This document reports lessons learned from an experimental deployment of service chaining with Segment Routing over the IPv6 data plane (SRv6) at an event network. The service chaining part of the network was comprised of four SRv6-capable nodes (three products from different vendors), five SRv6 proxy nodes (two products from different vendors and three open source software), and six services. This network was deployed at Interop Tokyo 2019, and it successfully provided network connectivity and services to all the exhibitors and visitors on the event.},
+}
+
+@INPROCEEDINGS{sfc-proxy-bpf,
+  author={Haeberle, Marco and Steinert, Benjamin and Weiss, Michael and Menth, Michael},
+  booktitle={2022 IEEE 8th International Conference on Network Softwarization (NetSoft)}, 
+  title={A Caching SFC Proxy Based on eBPF}, 
+  year={2022},
+  volume={},
+  number={},
+  pages={171-179},
+  doi={10.1109/NetSoft54395.2022.9844051}}
+
+@techreport{ietf-spring-sr-service-programming-08,
+    number =    {draft-ietf-spring-sr-service-programming-08},
+    type =      {Internet-Draft},
+    institution =   {Internet Engineering Task Force},
+    publisher = {Internet Engineering Task Force},
+    note =      {Work in Progress},
+    url =       {https://datatracker.ietf.org/doc/draft-ietf-spring-sr-service-programming/08/},
+        author =    {Francois Clad and Xiaohu Xu and Clarence Filsfils and Daniel Bernier and Cheng Li and Bruno Decraene and Shaowen Ma and Chaitanya Yadlapalli and Wim Henderickx and Stefano Salsano},
+    title =     {{Service Programming with Segment Routing}},
+    pagetotal = 37,
+    year =      2023,
+    month =     aug,
+    day =       21,
+    abstract =  {This document defines data plane functionality required to implement service segments and achieve service programming in SR-enabled MPLS and IPv6 networks, as described in the Segment Routing architecture.},
+}
+
+@misc{linux-srv6-impl,
+    title = {Segment Routing - Linux Kernele},
+    author = {{Cisco Systems, Inc.}},
+    url = {https://www.segment-routing.net/open-software/linux/},
+    note = {Accessed: 2023-08-22}
+}
+
+@techreport{lin-spring-srv6-aware-context-indicator-00,
+    number =    {draft-lin-spring-srv6-aware-context-indicator-00},
+    type =      {Internet-Draft},
+    institution =   {Internet Engineering Task Force},
+    publisher = {Internet Engineering Task Force},
+    note =      {Work in Progress},
+    url =       {https://datatracker.ietf.org/doc/draft-lin-spring-srv6-aware-context-indicator/00/},
+        author =    {Changwang Lin and Dongjie Lu and Mengxiao Chen and Meiling Chen},
+    title =     {{SRv6 Context Indicator SIDs for SR-Aware Services}},
+    pagetotal = 8,
+    year =      2023,
+    month =     jun,
+    day =       12,
+    abstract =  {A context indicator provides the context on how to process the packet for service nodes. This document describes how to use SRv6 SIDs as context indicator for SR-aware services. The corresponding Endpoint behaviors are defined.},
+}
+
+@INPROCEEDINGS{sera,
+  author={Abdelsalam, Ahmed and Salsano, Stefano and Clad, Francois and Camarillo, Pablo and Filsfils, Clarence},
+  booktitle={2018 IFIP Networking Conference (IFIP Networking) and Workshops}, 
+  title={SERA: SEgment Routing Aware Firewall for Service Function Chaining scenarios}, 
+  year={2018},
+  volume={},
+  number={},
+  pages={46-54},
+  doi={10.23919/IFIPNetworking.2018.8697021}}
+
+@misc{frr,
+    title = {FRRouting},
+    author = {{FRRouting Project, a Linux Foundation Collaborative Project}},
+    url = {https://frrouting.org/},
+    note = {Accessed: 2023-08-23}
+}
+
+@misc{trex,
+    title = {TRex: Realistic Traffic Generator},
+    author = {{TRex Team}},
+    url = {https://trex-tgn.cisco.com/},
+    note = {Accessed: 2023-08-25}
+}
+
+@misc{trex-throughput-info,
+    title = {How does trex calculate the throughput if I use API to read "rx_pps"?},
+    author = {{Itay Marom}},
+    url = {https://groups.google.com/g/trex-tgn/c/Hk9IFJJ0KNs/m/fCKphSl8DgAJ},
+    note = {Accessed: 2023-08-25}
+}
+
+@article{openflow,
+author = {McKeown, Nick and Anderson, Tom and Balakrishnan, Hari and Parulkar, Guru and Peterson, Larry and Rexford, Jennifer and Shenker, Scott and Turner, Jonathan},
+title = {OpenFlow: Enabling Innovation in Campus Networks},
+year = {2008},
+issue_date = {April 2008},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+volume = {38},
+number = {2},
+issn = {0146-4833},
+url = {https://doi.org/10.1145/1355734.1355746},
+doi = {10.1145/1355734.1355746},
+abstract = {This whitepaper proposes OpenFlow: a way for researchers to run experimental protocols in the networks they use every day. OpenFlow is based on an Ethernet switch, with an internal flow-table, and a standardized interface to add and remove flow entries. Our goal is to encourage networking vendors to add OpenFlow to their switch products for deployment in college campus backbones and wiring closets. We believe that OpenFlow is a pragmatic compromise: on one hand, it allows researchers to run experiments on heterogeneous switches in a uniform way at line-rate and with high port-density; while on the other hand, vendors do not need to expose the internal workings of their switches. In addition to allowing researchers to evaluate their ideas in real-world traffic settings, OpenFlow could serve as a useful campus component in proposed large-scale testbeds like GENI. Two buildings at Stanford University will soon run OpenFlow networks, using commercial Ethernet switches and routers. We will work to encourage deployment at other schools; and We encourage you to consider deploying OpenFlow in your university network too},
+journal = {SIGCOMM Comput. Commun. Rev.},
+month = {mar},
+pages = {69–74},
+numpages = {6},
+keywords = {flow-based, ethernet switch, virtualization}
+}
+
+@misc{rfc8300,
+    series =    {Request for Comments},
+    number =    8300,
+    howpublished =  {RFC 8300},
+    publisher = {RFC Editor},
+    doi =       {10.17487/RFC8300},
+    url =       {https://www.rfc-editor.org/info/rfc8300},
+        author =    {Paul Quinn and Uri Elzur and Carlos Pignataro},
+    title =     {{Network Service Header (NSH)}},
+    pagetotal = 40,
+    year =      2018,
+    month =     jan,
+    abstract =  {This document describes a Network Service Header (NSH) imposed on packets or frames to realize Service Function Paths (SFPs). The NSH also provides a mechanism for metadata exchange along the instantiated service paths. The NSH is the Service Function Chaining (SFC) encapsulation required to support the SFC architecture (defined in RFC 7665).},
+}
+
+@misc{rfc8595,
+    series =    {Request for Comments},
+    number =    8595,
+    howpublished =  {RFC 8595},
+    publisher = {RFC Editor},
+    doi =       {10.17487/RFC8595},
+    url =       {https://www.rfc-editor.org/info/rfc8595},
+        author =    {Adrian Farrel and Stewart Bryant and John Drake},
+    title =     {{An MPLS-Based Forwarding Plane for Service Function Chaining}},
+    pagetotal = 32,
+    year =      2019,
+    month =     jun,
+    abstract =  {This document describes how Service Function Chaining (SFC) can be achieved in an MPLS network by means of a logical representation of the Network Service Header (NSH) in an MPLS label stack. That is, the NSH is not used, but the fields of the NSH are mapped to fields in the MPLS label stack. This approach does not deprecate or replace the NSH, but it acknowledges that there may be a need for an interim deployment of SFC functionality in brownfield networks.},
+}
+
 @misc{rfc8660,
     series =    {Request for Comments},
     number =    8660,
@@ -11,4 +214,146 @@
     year =      2019,
     month =     dec,
     abstract =  {Segment Routing (SR) leverages the source-routing paradigm. A node steers a packet through a controlled set of instructions, called segments, by prepending the packet with an SR header. In the MPLS data plane, the SR header is instantiated through a label stack. This document specifies the forwarding behavior to allow instantiating SR over the MPLS data plane (SR-MPLS).},
+}
+
+@article{sfc-on-sdn-nfv-servey,
+title = {A comprehensive survey of service function chain provisioning approaches in SDN and NFV architecture},
+journal = {Computer Science Review},
+volume = {38},
+pages = {100298},
+year = {2020},
+issn = {1574-0137},
+doi = {https://doi.org/10.1016/j.cosrev.2020.100298},
+url = {https://www.sciencedirect.com/science/article/pii/S1574013720303981},
+author = {Karamjeet Kaur and Veenu Mangat and Krishan Kumar},
+keywords = {Network Function Virtualization, Service Function Chaining, Service classifier, Virtual Network Function, Service Function Forwarder, Load balancing of VNFs, VNF placement, Availability},
+abstract = {Network Function Virtualization (NFV) has emerged as an innovative network architecture paradigm that uses IT virtualization technology to abstract the network node functions from hardware. The virtualized network services hosted on Virtual Machines (VMs) are called Virtual Network Functions (VNFs). The sequence of multiple VNFs required by network operators to perform traffic steering is called a Service Function Chain (SFC). Software Defined Networking (SDN) is a complementary technology which allows programmatic control of network functions and policy-based resource management. The flexibility of SDN facilitates structuring of SFCs with minimum latency. SFC provisioning using SDN and NFV will enable implementation of next generation 5G networks and make the subscriber/operator relationship more economical and flexible. In this paper, a Systematic Literature Review (SLR) is used to select the high-quality research studies related to dynamic provisioning of SFCs in SDN and NFV. A total of 70 studies available in the literature are analyzed. Thereafter, a layered taxonomy is proposed to classify the literature based on the parameters of optimization approaches for the provisioning of SFCs. Finally, the open research challenges for SFC deployment are identified and discussed. This paper is intended to serve as a ready reference for the research community to develop effective and efficient techniques for SFC provisioning in combined SDN/NFV networks by considering a combination of multiple factors viz. placement of VNFs, load balancing, and availability. It will surely aid Cloud Service Providers (CSPs), Application Service Providers (ASPs), and Internet Service Providers (ISPs) in offering reliable, scalable and high-performance services to their customers.}
+}
+
+@article{sfc-on-sdn-scenario,
+title = {SDN-based service function chaining mechanism and service prototype implementation in NFV scenario},
+journal = {Computer Standards \& Interfaces},
+volume = {54},
+pages = {247-265},
+year = {2017},
+note = {SI: Standardization SDN\&NFV},
+issn = {0920-5489},
+doi = {https://doi.org/10.1016/j.csi.2017.01.002},
+url = {https://www.sciencedirect.com/science/article/pii/S092054891730017X},
+author = {Irena Trajkovska and Michail-Alexandros Kourtis and Christos Sakkas and Denis Baudinot and João Silva and Piyush Harsh and George Xylouris and Thomas Michael Bohnert and Harilaos Koumaras},
+keywords = {Sfc, Sdk, Sdn, Dpi, Traffic classifier, Media transcoder, Wan, Nfv},
+abstract = {The fast growing development of Network Function Virtualization (NFV) trends and the remarkable progress of Software Defined Networking (SDN) have yielded a synergy between both, towards the provision of convergent networking solutions. Since the traditional networking principles were not designed according to the NFV principles, a work has emerged dedicated to protocol redesign among the academic fellows and the industry representatives. A typical example that has been introduced in such eco-system is the concept of network service chaining, as a composition of virtual network functions stitched together in a logically ordered fashion, to create an integral networking service that can be owned by network administrators, programmers, cloud- and telco-operators. This appoints SDN as an essential technology enabler in administering advanced traffic steering techniques, thanks to the SDN controller's capability to dynamically manage VNFs virtual connections and underlying dataplane flows. Despite the rapid progression, the strategies for traffic steering in NFV environment, are still facing imminent challenges to be addressed. This paper joins NFV and SDN technology into a novel traffic steering solution based on open source reference implementations (such as SDK for SDN, virtual Traffic Classifier, virtual Media Transcoder, and WAN Infrastructure Connection Manager) designed with performance and network optimizations in mind. We have successfully deployed and tested the system prototype in a real datacenter. The evaluation results of the prototype system: (1) validated the presented chain use cases, (2) affirmed an efficient performance and scalability of the chaining method, and (3) certified good quality of video traffic transmission and transcoding.}
+}
+
+@INPROCEEDINGS{imple-sfc-with-openflow,
+  author={Davoli, Gianluca and Cerroni, Walter and Contoli, Chiara and Foresta, Francesco and Callegati, Franco},
+  booktitle={2017 IEEE Conference on Network Function Virtualization and Software Defined Networks (NFV-SDN)}, 
+  title={Implementation of service function chaining control plane through OpenFlow}, 
+  year={2017},
+  volume={},
+  number={},
+  pages={1-4},
+  doi={10.1109/NFV-SDN.2017.8169852}}
+
+@misc{dpdk,
+  author       = {{DPDK Project}},
+  title        = {DPDK},
+  url = {https://www.dpdk.org/},
+  note = {Accessed: 2023-09-15}
+}
+
+@INPROCEEDINGS{sfc-with-leg-vnf,
+  author={Mayer, Andrea and Salsano, Stefano and Ventre, Pier Luigi and Abdelsalam, Ahmed and Chiaraviglio, Luca and Filsfils, Clarence},
+  booktitle={2019 IEEE Conference on Network Softwarization (NetSoft)}, 
+  title={An Efficient Linux Kernel Implementation of Service Function Chaining for Legacy VNFs Based on IPv6 Segment Routing}, 
+  year={2019},
+  volume={},
+  number={},
+  pages={333-341},
+  doi={10.1109/NETSOFT.2019.8806652}}
+
+@INPROCEEDINGS{afxdp-for-srv6,
+  author={Zhao, Baosen and Qin, Yifang and Yang, Wanghong and Fan, Pengfei and Zhou, Xu},
+  booktitle={2022 IEEE 47th Conference on Local Computer Networks (LCN)}, 
+  title={SRA: Leveraging AF\_XDP for Programmable Network Functions with IPv6 Segment Routing}, 
+  year={2022},
+  volume={},
+  number={},
+  pages={455-462},
+  doi={10.1109/LCN53696.2022.9843244}}
+
+@misc{rfc7665,
+    series =    {Request for Comments},
+    number =    7665,
+    howpublished =  {RFC 7665},
+    publisher = {RFC Editor},
+    doi =       {10.17487/RFC7665},
+    url =       {https://www.rfc-editor.org/info/rfc7665},
+        author =    {Joel M. Halpern and Carlos Pignataro},
+    title =     {{Service Function Chaining (SFC) Architecture}},
+    pagetotal = 32,
+    year =      2015,
+    month =     oct,
+    abstract =  {This document describes an architecture for the specification, creation, and ongoing maintenance of Service Function Chains (SFCs) in a network. It includes architectural concepts, principles, and components used in the construction of composite services through deployment of SFCs, with a focus on those to be standardized in the IETF. This document does not propose solutions, protocols, or extensions to existing protocols.},
+}
+
+@ARTICLE{nfv,
+  author={Han, Bo and Gopalakrishnan, Vijay and Ji, Lusheng and Lee, Seungjoon},
+  journal={IEEE Communications Magazine}, 
+  title={Network function virtualization: Challenges and opportunities for innovations}, 
+  year={2015},
+  volume={53},
+  number={2},
+  pages={90-97},
+  doi={10.1109/MCOM.2015.7045396}}
+
+@misc{rfc8754,
+    series =    {Request for Comments},
+    number =    8754,
+    howpublished =  {RFC 8754},
+    publisher = {RFC Editor},
+    doi =       {10.17487/RFC8754},
+    url =       {https://www.rfc-editor.org/info/rfc8754},
+        author =    {Clarence Filsfils and Darren Dukes and Stefano Previdi and John Leddy and Satoru Matsushima and Daniel Voyer},
+    title =     {{IPv6 Segment Routing Header (SRH)}},
+    pagetotal = 27,
+    year =      2020,
+    month =     mar,
+    abstract =  {Segment Routing can be applied to the IPv6 data plane using a new type of Routing Extension Header called the Segment Routing Header (SRH). This document describes the SRH and how it is used by nodes that are Segment Routing (SR) capable.},
+}
+
+@misc{rfc9252,
+    series =    {Request for Comments},
+    number =    9252,
+    howpublished =  {RFC 9252},
+    publisher = {RFC Editor},
+    doi =       {10.17487/RFC9252},
+    url =       {https://www.rfc-editor.org/info/rfc9252},
+        author =    {Gaurav Dawra and Ketan Talaulikar and Robert Raszuk and Bruno Decraene and Shunwan Zhuang and Jorge Rabadan},
+    title =     {{BGP Overlay Services Based on Segment Routing over IPv6 (SRv6)}},
+    pagetotal = 29,
+    year =      2022,
+    month =     jul,
+    abstract =  {This document defines procedures and messages for SRv6-based BGP services, including Layer 3 Virtual Private Network (L3VPN), Ethernet VPN (EVPN), and Internet services. It builds on "BGP/MPLS IP Virtual Private Networks (VPNs)" (RFC 4364) and "BGP MPLS-Based Ethernet VPN" (RFC 7432).},
+}
+
+@misc{nftables,
+    title = {{The netfilter.org "nftables" project}},
+    author = {{The Netfilter's webmasters}},
+    url = {https://nftables.org/projects/nftables/index.html},
+    note = {Accessed: 2023-09-18}
+}
+
+@misc{iptables,
+    title = {{The netfilter.org "iptables" project}},
+    author = {{The Netfilter's webmasters}},
+    url = {https://nftables.org/projects/iptables/index.html},
+    note = {Accessed: 2023-09-18}
+}
+
+@misc{trex-latency,
+    title = {{TRex Stateless support}},
+    author = {{TRex team}},
+    url = {{https://trex-tgn.cisco.com/trex/doc/trex\_stateless.html}},
+    note = {Accessed: 2023-09-20}
 }
