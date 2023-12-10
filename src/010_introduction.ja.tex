@@ -3,3 +3,18 @@
 
 \section{背景}
 \label{section:background}
+Service Function Chaining (SFC) は，Software Defined Network (SDN) および Network Function Virtualization (NFV) の文脈で研究されているトピックである~\cite{nfv,sfc-on-sdn-nfv-servey,sfc-on-sdn-scenario,imple-sfc-with-openflow}．
+SFC では，ネットワーク機能 (NF) を通過する順序や NF のタイプに関する情報を事前に定義し，それらのルールをネットワーク機器に配布する必要がある．
+SFC ネットワークを構築するネットワーク機器は，事前に決定されたルールに従って受信したパケットを NF に導く．
+パケットを NF へ導くためのルールは，SDN コントローラやルーティングプロトコルによってネットワーク機器に配布される．
+ネットワーク機器は IP ルーティング上の最短経路に関係なく，配布された SFC ルールに従ってパケットを転送する次のホップを選択する必要がある．
+また，パケットのヘッダにこれらのルールに合致させるための特別な情報を埋め込む手法が取られることもある．
+SFC は，クラウドサービスプロバイダ (CSP)，アプリケーションサービスプロバイダ (ASP) 及びインターネットサービスプロバイダ (ISP) にとって，現在の静的な環境に代わる柔軟かつ経済的な選択肢を提供する~\cite{survey-on-sfc}．
+
+
+\section{本論文の目的と構成}
+本論文における以降の構成は次の通りである．
+\ref*{chap:related_works}章では，サービスファンクションチェイニングに関する前提知識，及びそれを実現する技術について解説し，本論文の概要について述べる．
+\ref*{chap:design_and_impl}章では，本論文の提案する新たな SRv6 End behavior である End.AN.NF についての詳細な動作，及び実装について述べる．
+\ref*{chap:evaluation}章では，実装した End.AN.NF について，レイテンシ及びスループットの性能を特定のを変化させながら性能の計測する．
+\ref*{chap:conclusion}章では，本研究における結論と今後の展望について述べ，End.AN.NF に必要なネットワーク制御プレーンについて検討する．
