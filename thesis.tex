@@ -30,6 +30,8 @@ pdftitle={RG},%
 \usepackage{indentfirst}
 \usepackage{url}
 \usepackage{listings,./sty/jlisting}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
 
 \def\lstlistingname{プログラム}
 
@@ -82,7 +84,7 @@ pdftitle={RG},%
 \makeatother
 
 % タイトル
-\def\title{Linux SRv6 ルーティングインフラにおける SR-Aware ネットワーク機能としての Netfilter の統合}
+\def\title{Linux Netfilter の SRv6 への統合}
 % 英語タイトル
 \def\etitle{Integrating Netfilter into SRv6 Routing Infrastructure of Linux as an SR-Aware Network Function}
 % 著者(日本語)
@@ -122,6 +124,7 @@ pdftitle={RG},%
 \input{src/030_design_and_impl.ja}
 \input{src/040_evaluation.ja}
 \input{src/050_conclusion.ja}
+\input{src/999_thanks.ja.tex}
 
 \renewcommand{\thechapter}{\Alph{chapter}}
 \setcounter{chapter}{0}

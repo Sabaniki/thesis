@@ -1,0 +1,42 @@
+\chapter{BackGround And Related Works}
+\label{chap:related_works}
+SRv6~\cite{rfc8986} is one of the source routing architectures that uses IPv6.
+It allows network operators or applications to specify intermediate points that a packet passes through by embedding a sequence of identifiers into the IPv6 extension header, called SRv6 header (SRH)~\cite{rfc8754}.
+The identifiers are called by Segment Identifiers (SIDs), and each SID represents a specific function to be performed at a specific location in a network.  To specify which SID is the current SID in the SID list, SRH has a field called Segments Left (segleft).
+segleft is an index for the SID list, starting from $(number\ of\ SIDs)-1$ and ending at zero.
+A SID is an IPv6 address associated with a specific segment in a network.
+The SID is structured as \texttt{LOC:FUNCT:ARG}, where \texttt{LOC} represents a locator, \texttt{FUNCT} is an identification of a local behavior associated with the SID, and \texttt{ARG} may encode additional information required for an action.
+The locator may also be represented as \texttt{B:N}, where \texttt{B} is the SRv6 SID block (an IPv6 prefix allocated for SRv6 SIDs) and \texttt{N} is the identifier of the node instantiating the SID.
+
+When SRv6 node receives a packet whose destination IPv6 address is a local SID configured in the node, the SRv6 node performs pre-defined behavior associated with the SID.
+In the SRv6 context, the behaviors that SRv6 nodes perform are called End behaviors.
+Currently, RFC8986~\cite{rfc8986} defines 15 types of End behaviors, and the most basic End behavior is \texttt{End}. % 自分が `pure' みたいな ワードで誤魔化していたのを 15 個あるうちの the most basic という表現にしている
+\texttt{End} decrements the segleft of SRH of a received packet and replaces the destination IPv6 address with the next SID.
+Next, the SRv6 node forwards the packet to the next hop in accordance with the updated destination IPv6 address.
+RFC8986 also defines behaviors that encapsulate packets in SRH involving SID lists, which are called Headend behaviors.
+
+SIDs in SRv6 are IPv6 addresses; therefore, advertising SIDs over the existing routing protocols can build a network based on SRv6.
+For example, \texttt{H.Encaps} and \texttt{End.DT4}, which are Headend and End behaviors respectively, can compose layer-3 VPN~\cite{rfc9252}.
+\texttt{H.Encaps} encapsulates IPv4 or IPv6 packets in outer IPv6 headers with SRH, and \texttt{End.DT4} decapsulates the packets encapsulated in the SRH.
+When \texttt{H.Encaps} in an ingress SRv6 node encapsulates packets in outer IPv6 headers, whose destination address is \texttt{End.DT4} SID of an egress SRv6 node, the encapsulated packets are forwarded to the egress SRv6 node in accordance with the \texttt{LOC} of the \texttt{End.DT4} SID over the underlying SRv6 routing infrastructure.
+The egress SRv6 node receives the packets and performs \texttt{End.DT4}; the packets are then decapsulated and the inner packets are routed based on a Virtual Routing and Forwarding (VRF) table associating the \texttt{ARG} of the SID.
+
+The above examples illustrate the behaviors associated with SIDs.
+On the other hand, some behaviors are not limited to encapsulation and decapsulation; NFs applied to packets can be also represented by SIDs. % パケットのヘッダを情報を書き換える，という SRv6 の基本的な動作を説明したあと，NF の適用もできる，という書き方
+When an NF applies some network services for transit packets while performing \texttt{End}---decrementing segleft and updating destination IPv6 address with the next SID, such an NF is called an SR-Aware function.
+SERA~\cite{sera} is an implementation of an SR-Aware function, integrated with Linux iptables.
+SERA extends Linux iptables so that iptables matches fields in SRH with iptables rules, to apply filtering rules for firewall purposes.
+SERA can also perform like \texttt{End}, forwarding packets toward the next SID.
+This design choice makes it difficult to integrate the SIDs associated with SERA into routing infrastructures; these SIDs in iptables cannot be advertised via the existing routing protocols, unlike the example of layer-3 VPN.
+As outlined above, how to integrate a form of NF and the underlying IPv6 routing infrastructure still has room for consideration. % 理由を述べた上で，検討の余地があるとする．(End.AN.NF の伏線)
+
+In contrast to SR-Aware functions, various methodologies to integrate traditional, SR-unaware NFs into SRv6-based SFC have been proposed. % SR-aware functions を先に述べた上で unaware の特徴，動作，実例を述べる
+SR Proxy~\cite{ietf-spring-sr-service-programming-08} is the key component to connect SR-unaware NFs with underlying SRv6 networks.
+An SR Proxy receives packets destined to a local SID, passes inner packets without the SRH to a associated NF, attaches proper SRH to packets returned from the NF, and forwards the packets to tne next SID.
+Some SR Proxy implementations in Linux have been proposed~\cite{sfc-proxy-bpf,sfc-with-leg-vnf,afxdp-for-srv6}.
+On the other hand, SR Proxies fundamentally introduce additional complexities to networks.
+For example, SR proxies need to determine proper SID lists attached to packets returned from NFs.
+There is a possibility that inner packets have arbitrary destinations and arbitrary sources.
+Thus, SID lists that the SR proxy should attach can vary depending on the inner packets.
+SR proxies need to implement their own mechanism to determine proper the SID lists to be attached, for example, attaching static ones (\texttt{End.AS}) or caching some states inside proxy implementations~\cite{sfc-proxy-bpf}.
+Moreover, some issues for deploying SR proxies are addressed---a type of service that cannot co-exist with a specific SR Proxy type, service liveness detection, and an SID advertisement issue for services behind SR proxies~\cite{draft-scexp}.

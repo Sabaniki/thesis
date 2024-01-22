@@ -1,2 +1,10 @@
 \chapter{結論}
 \label{chap:conclusion}
+本論文では，Linux netfilter を統合し，BGP などの既存のルーティングプロトコルとの共存を実現する新しい SRv6 End ビヘイビア，End.AN.NF を提案した．
+End.AN.NF は，SRv6 インナーパケットに対して netfilter の 3 つのフックポイント prerouting，forward，postrouting を透過的に動作させることができる．
+netfilter のフックポイントを透過する事により，netfilter ベースのアプリケーションはその実装を変更せずに SR-Aware アプリケーションとして機能させることができる．
+また，End.AN.NF はパケットをマークするために SID の \texttt{ARG} フィールドを利用する．
+このアプローチにより，netfilter ベースのアプリケーションはパケットバッファ上のマークをマッチングさせることによるダイナミックなルール調整が可能となる．
+我々は End.AN.NF を Linux カーネルに実装し，その性能を評価した．
+評価の結果，我々の実装は，SRv6 インナーパケットに netfilter のルールを適用する方法である End.DT4 と H.Encaps の組み合わせと比較して，27\% 高いスループットと3.0マイクロ秒低いレイテンシを達成した．
+さらに，End と End.AN.NF のスループットの差は 6\% 未満であり，End.AN.NF のオーバーヘッドは最も基本的な End の動作と比較して許容範囲内であることを示している．

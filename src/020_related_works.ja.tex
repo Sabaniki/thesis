@@ -1,2 +1,60 @@
-\chapter{背景と先行研究}
+\chapter{先行研究と問題提起}
 \label{chap:related_works}
+本章では，Service Function Chaining (SFC)，及びそれを実現する技術について解説する．
+SFC を実現するための技術は複数存在する．
+本論文では，複数ある技術の中で Segment Routing over IPv6 (SRv6) における SFC を前提としているため，SRv6 の概念やその知識についても解説する．
+
+\section{SRv6 と NF の統合手法}
+\label{section:srv6-and-NF}
+\ref*{section:srv6}章で示した End.DT4 及び H.Encaps は，パケットをカプセル化，及びデカプセル化するビヘイビアである．
+一方で，いくつかのビヘイビアのもつ機能はパケットのカプセル化，及びデカプセル化に限定されていない．
+SRv6 では，パケットに適用される NF (Network Function) も SID で表現可能である．
+NF がトランジットパケットに対して，segleft をデクリメントし，宛先 IPv6 アドレスを次の SID で更新する End ビヘイビアとしての動作をしながらネットワークサービスを適用する場合，その NF は SR-Aware ファンクションと呼ばれる．
+SERA~\cite{sera} は，Linux iptables に統合された SR-Aware ファンクションの実装である．
+SERA は Linux iptables を拡張し，SRH のフィールドと iptables のルールをマッチさせて，ファイアウォール用のフィルタリングルールを適用する．
+SERA はまた，End ビヘイビアのように，パケットを次の SID に転送する機能も持つ．
+しかしながら，SERA の採用した iptables を拡張する，というデザインでは SERA に関連する SID を既存のルーティングインフラに統合することは困難である．
+iptables 内のフィルタリングルールとして利用するための SID の情報は，\ref*{section:srv6}章で解説した layer-3 VPN の例とは異なり，既存のルーティングプロトコルを通じて広告することはできない．
+このように，NF の一形態と基盤となる IPv6 ルーティングインフラをどのように統合するかについては，検討の余地がある．
+
+SR-Aware ファンクションと対照的に，従来の SR-unaware NF を SRv6 ベースの SFC に統合するための様々な方法論が提案されている．
+SR プロキシ~\cite{ietf-spring-sr-service-programming-08} は，SR-unaware NF を SRv6 ネットワークに接続するための重要なコンポーネントである．
+SR プロキシは ローカル SID 宛のパケットを受信し，SRH を持たないインナーパケットを関連する NF に渡した後，NF から返されたパケットに適切な SRH を再度付加し，次の SID にパケットを転送する．
+Linux における SR プロキシの実装もいくつか提案されている~\cite{sfc-proxy-bpf,sfc-with-leg-vnf,afxdp-for-srv6}．
+しかし，SR プロキシは根本的にネットワークにさらなる複雑さをもたらす．
+例えば，SR プロキシは NF から返されるパケットに付加する適切な SID リストを決定する必要がある．
+内部パケットは任意の宛先と送信元を持つ可能性があり，そのため SR プロキシが付けるべき SID リストは内部パケットによって異なる可能性がある．
+SRプロキシは，適切なSIDリストを決定するための独自のメカニズムを実装する必要がある．
+例えば，静的な SID リストをアタッチする End.AS か，プロキシの内部で状態をキャッシュする必要がある~\cite{sfc-proxy-bpf} ．
+さらに，SR プロキシをデプロイするためにはいくつかの問題が存在する．
+例えば特定の SR プロキシタイプと共存できないサービスのタイプ，サービスの有効性の検出，SR プロキシの背後のサービスに対する SID 広告の問題など~\cite{draft-scexp}が既にインターネットドラフトとして挙げらている．
+
+
+\textbf{[この段落では End.eBPF について述べる]}
+\begin{itemize}
+    \item eBFP とはなにか
+    \begin{itemize}
+        \item eBPF を使って NF を作ることができる 
+        \item 最近では LKM に変わって Linux kernel を拡張する方法としての側面に注目が集まっている
+        \item eBPF は Virtual Machine で動作するものの Linux kernel に依存する機能も多い
+    \end{itemize}
+    \item End.eBPF とはなにか
+    \item eBPF に対して，本研究では netfilter を NF に統合することを目的としている
+    \begin{itemize}
+        \item ここで Linux kernel に依存する End ビヘイビアを提案することの妥当性を述べる
+    \end{itemize}
+\end{itemize}
+
+\section{問題提起}
+\label{section:prob}
+現在，Linux の持つ SRv6・IPv6 ルーティングインフラストラクチャを活用しながら Linux カーネルに実装されている netfilter という多機能なパケット処理機能 を NF として利用する手法は，確立されていない．
+現在提案されている手法では，Linux の持つ IPv6 ルーティングインフラストラクチャを活用した SR-Aware NF をシンプルに実現することは難しい．
+また，Linux カーネルには netfilter という多機能なパケット処理機能が実装されているものの，SRv6 上で netfilter を直接 NF として扱う方法も確立されていない．
+SRv6 は NF を SID として表すことで SFC を実現可能なアーキテクチャであるものの，SID として表現された SRv6 上のノードとしての NF と，実際のアプリケーションとしての NF を統合するの方法は自明ではない．
+セクション~\ref*{section:srv6}で述べた SR プロキシを利用する方法では，SR プロキシを導入することで生まれるオーバヘッドや運用上の問題が指摘されている．
+また，SRH でカプセル化されているパケットに対して，パケットをカプセル化したまま netfilter を適用する手法も確立されていない．
+本論文では，Linux netfilter を SRv6 NF として活用するための手法を提案する．
+
+\section{Linux netfilter}
+\textbf{[Linux netfilter について説明する． netfilter によってできることや hook point の場所やパケットの流れについて説明する．]}
+\textbf{[なぜ本研究では NF として netfilter を選んだのかについても述べる．]}
