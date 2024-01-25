@@ -74,7 +74,9 @@ pdftitle={RG},%
 \renewcommand{\floatpagefraction}{.99}
 \renewcommand{\bibname}{参考文献}
 
-
+\usepackage{tikz}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=1pt] (char) {#1};}}
 \pagestyle{fancy}
 \lhead[]{}
 

@@ -137,6 +137,13 @@ abstract = {Cloud computing is gaining significant attention and virtualized dat
     note = {Accessed: 2023-08-23}
 }
 
+@misc{gobgp,
+    title = {gobgp},
+    author = {{GoBGP Community}},
+    url = {https://osrg.github.io/gobgp/},
+    note = {Accessed: 2024-01-25}
+}
+
 @misc{trex,
     title = {TRex: Realistic Traffic Generator},
     author = {{TRex Team}},
@@ -344,6 +351,20 @@ abstract = {The fast growing development of Network Function Virtualization (NFV
     note = {Accessed: 2023-09-18}
 }
 
+@misc{netfilter,
+    title = {{netfilter: firewalling, NAT, and packet mangling for linux}},
+    author = {{The Netfilter's webmasters}},
+    url = {https://www.netfilter.org/},
+    note = {Accessed: 2024-01-25}
+}
+
+@misc{nf-hooks,
+    title = {{Netfilter hooks}},
+    author = {{The Netfilter's webmasters}},
+    url = {https://wiki.nftables.org/wiki-nftables/index.php/Netfilter_hooks},
+    note = {Accessed: 2024-01-25}
+}
+
 @misc{iptables,
     title = {{The netfilter.org "iptables" project}},
     author = {{The Netfilter's webmasters}},
@@ -356,4 +377,127 @@ abstract = {The fast growing development of Network Function Virtualization (NFV
     author = {{TRex team}},
     url = {{https://trex-tgn.cisco.com/trex/doc/trex\_stateless.html}},
     note = {Accessed: 2023-09-20}
+}
+
+@misc{k8s,
+    title = {{kubernetes}},
+    author = {{The Kubernetes Authors}},
+    url = {{https://kubernetes.io/ja/}},
+    note = {Accessed: 2024-01-23}
+}
+
+@InProceedings{sfc-with-k8s,
+author="Bittar, Abdullah
+and Wang, Ziqiang
+and Aghasharif, Amir
+and Huang, Changcheng
+and Shami, Gauravdeep
+and Lyonnais, Marc
+and Wilson, Rodney",
+editor="Panda, Dhabaleswar K.
+and Sullivan, Michael",
+title="Service Function Chaining Design {\&} Implementation Using Network Service Mesh in Kubernetes",
+booktitle="Supercomputing Frontiers",
+year="2022",
+publisher="Springer International Publishing",
+address="Cham",
+pages="121--140",
+abstract="Service Function Chaining (SFC) in a cloud-native environment is becoming essential as more users move towards clouds today. Cloud-native environments utilize container-based microservices to provide software solutions. Integrating SFC with container-based microservices introduces new challenges. This paper exploited Network Service Mesh (NSM) framework features to create a service function chain on a multi-node Kubernetes cluster. We focus on the design and implementation of SFC in Kubernetes using NSM. Also, we deployed our custom-built containers in the Kubernetes cluster to create a service function chain. Hence, we demonstrate how an SFC is designed in a cloud-native environment rather than a traditional NFV/SDN approach. Furthermore, to evaluate the performance, we compare different frameworks that support SFC in Kubernetes, highlighting the advantage and disadvantages of each framework.",
+isbn="978-3-031-10419-0"
+}
+
+@misc{rfc4271,
+    series =    {Request for Comments},
+    number =    4271,
+    howpublished =  {RFC 4271},
+    publisher = {RFC Editor},
+    doi =       {10.17487/RFC4271},
+    url =       {https://www.rfc-editor.org/info/rfc4271},
+    author =    {Yakov Rekhter and Susan Hares and Tony Li},
+    title =     {{A Border Gateway Protocol 4 (BGP-4)}},
+    pagetotal = 104,
+    year =      2006,
+    month =     jan,
+    abstract =  {This document discusses the Border Gateway Protocol (BGP), which is an inter-Autonomous System routing protocol. The primary function of a BGP speaking system is to exchange network reachability information with other BGP systems. This network reachability information includes information on the list of Autonomous Systems (ASes) that reachability information traverses. This information is sufficient for constructing a graph of AS connectivity for this reachability from which routing loops may be pruned, and, at the AS level, some policy decisions may be enforced. BGP-4 provides a set of mechanisms for supporting Classless Inter-Domain Routing (CIDR). These mechanisms include support for advertising a set of destinations as an IP prefix, and eliminating the concept of network "class" within BGP. BGP-4 also introduces mechanisms that allow aggregation of routes, including aggregation of AS paths. This document obsoletes RFC 1771. {[}STANDARDS-TRACK{]}},
+}
+
+@misc{rfc2328,
+    series =    {Request for Comments},
+    number =    2328,
+    howpublished =  {RFC 2328},
+    publisher = {RFC Editor},
+    doi =       {10.17487/RFC2328},
+    url =       {https://www.rfc-editor.org/info/rfc2328},
+    author =    {John Moy},
+    title =     {{OSPF Version 2}},
+    pagetotal = 244,
+    year =      1998,
+    month =     apr,
+    day =       1,
+    abstract =  {This memo documents version 2 of the OSPF protocol. OSPF is a link- state routing protocol. {[}STANDARDS-TRACK{]}},
+}
+
+% Datatracker information for RFCs on the Legacy Stream is unfortunately often
+% incorrect. Please correct the bibtex below based on the information in the
+% actual RFC at https://rfc-editor.org/rfc/rfc1142.txt
+
+@misc{rfc1142,
+    series =    {Request for Comments},
+    number =    1142,
+    howpublished =  {RFC 1142},
+    publisher = {RFC Editor},
+    doi =       {10.17487/RFC1142},
+    url =       {https://www.rfc-editor.org/info/rfc1142},
+    author =    {},
+    title =     {{OSI IS-IS Intra-domain Routing Protocol}},
+    pagetotal = 517,
+    year =      1990,
+    month =     feb,
+    abstract =  {This RFC is a republication of ISO DP 10589 as a service to the Internet community. This is not an Internet standard.},
+}
+
+@misc{rfc3031,
+    series =    {Request for Comments},
+    number =    3031,
+    howpublished =  {RFC 3031},
+    publisher = {RFC Editor},
+    doi =       {10.17487/RFC3031},
+    url =       {https://www.rfc-editor.org/info/rfc3031},
+    author =    {Arun Viswanathan and Eric C. Rosen and Ross Callon},
+    title =     {{Multiprotocol Label Switching Architecture}},
+    pagetotal = 61,
+    year =      2001,
+    month =     jan,
+    abstract =  {This document specifies the architecture for Multiprotocol Label Switching (MPLS). {[}STANDARDS-TRACK{]}},
+}
+
+
+@misc{conntract-tools,
+    title = {{conntract-tools: Connection tracking userspace tools for Linux}},
+    author = {{Pablo Neira Ayuso}},
+    url = {{https://conntrack-tools.netfilter.org/}},
+    note = {Accessed: 2024-01-25}
+}
+
+@misc{snort,
+    title = {{conntract-tools: Connection tracking userspace tools for Linux}},
+    author = {{Pablo Neira Ayuso}},
+    url = {{https://conntrack-tools.netfilter.org/}},
+    note = {Accessed: 2024-01-25}
+}
+¥
+@techreport{filsfils-spring-srv6-interop-02,
+    number =    {draft-filsfils-spring-srv6-interop-02},
+    type =      {Internet-Draft},
+    institution =   {Internet Engineering Task Force},
+    publisher = {Internet Engineering Task Force},
+    note =      {Work in Progress},
+    url =       {https://datatracker.ietf.org/doc/draft-filsfils-spring-srv6-interop/02/},
+    author =    {Clarence Filsfils and Francois Clad and Pablo Camarillo and Ahmed Abdelsalam and Stefano Salsano and Olivier Bonaventure and Jakub Horn and Jose Liste},
+    title =     {{SRv6 interoperability report}},
+    pagetotal = 10,
+    year =      2019,
+    month =     mar,
+    day =       4,
+    abstract =  {Segment Routing (SR) can be applied to the IPv6 data plane by leveraging a new type of routing extension header, called Segment Routing Header (SRH). An SRH contains an ordered list, or sequence, of segments representing topological or service-based instructions, or any combination of those. This draft provides an overview of IPv6 Segment Routing (SRv6) implementations and interoperability. It makes an inventory of the various pieces of hardware and software that have been demonstrated to support the processing of an SRH, and details some interoperability scenarios that have been showcased at a public event.},
 }
