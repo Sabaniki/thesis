@@ -92,15 +92,15 @@ End.AN.NF のアーキテクチャは，ルーティング制御に既存のル�
   \begin{figure*}[t]
     \centering
     \includegraphics[width=0.95\linewidth]{img/End-FW-show-route.pdf}
-    \caption{The modified Linux kernel treats an \texttt{End.AN.NF} SID as an IPv6 routing table entry. We can manage the \texttt{End.AN.NF} routes with the existing tools such as iproute2.}
+    \caption{The modified Linux カーネルtreats an \texttt{End.AN.NF} SID as an IPv6 routing table entry. We can manage the \texttt{End.AN.NF} routes with the existing tools such as iproute2.}
     \label{fig:show-route}
   \end{figure*}
 
 \section{実装}
 \label{section:implementation}
-End.AN.NF は Linux kernel で動作する SRv6 ビヘイビアである．
-End.AN.NF を実装するためには，Linux kernel の IPv6 フォワーディングの実装，及び SRv6 の実装を理解する必要がある．
-本セクションでは，Linux kernel における SRv6 の実装，及び IPv6 レイヤの netfilter の実装を述べた上で End.AN.NF の実装について説明する．
+End.AN.NF は Linux カーネルで動作する SRv6 ビヘイビアである．
+End.AN.NF を実装するためには，Linux カーネルの IPv6 フォワーディングの実装，及び SRv6 の実装を理解する必要がある．
+本セクションでは，Linux カーネルにおける SRv6 の実装，及び IPv6 レイヤの netfilter の実装を述べた上で End.AN.NF の実装について説明する．
 % Linux カーネルは，End ビヘイビアを関数の SID を宛先とするルーティングテーブルエントリとして実装している．
 % このメカニズムは seg6local と呼ばれる．
 % End.AN.NF は End ビヘイビアの1つであるため，その実装も seg6local を利用している．

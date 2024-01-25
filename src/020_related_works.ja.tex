@@ -11,23 +11,23 @@
 SFC をデプロイする上で，SF を動作させる環境として Linux を選択することは有用である．
 章~\ref*{section:sfc} で述べたように，SFC 環境では SF を汎用サーバや仮想マシン，コンテナの中にデプロイすることが一般的になっている．
 Linux 上で任意のアプリケーションを開発して，そのバイナリを動作させることは容易であり，開発に必要な基盤や情報も十分に整っている．
-更に Linux kernel はコンテナメカニズムもサポートしており，SF アプリケーションをコンテナの中で動作させることも可能である．
-また，Linux kernel にはパケットフォワーディング機能が実装されている．
+更に Linux カーネルはコンテナメカニズムもサポートしており，SF アプリケーションをコンテナの中で動作させることも可能である．
+また，Linux カーネルにはパケットフォワーディング機能が実装されている．
 IPv4 パケットや IPv6 パケットの転送はもちろん，MPLS や VXLAN，更にはいくつかの SRv6 ビヘイビアも実装されている．
 SRv6 では既存のルーティングプロトコルを使って SID を経路情報として他のルータへ広告することができる．
 Linux には FRR~\cite{frr} や gobgp~\cite{gobgp} などのルーティングソフトウェア実装が存在し，これらを利用して SID を広告できる．
 
-Linux kernel には netfilter~\cite*{netfilter} と呼ばれるパケット処理フレームも実装されており，これは SF アプリケーションを開発するのに有用である．
+Linux カーネルには netfilter~\cite*{netfilter} と呼ばれるパケット処理フレームも実装されており，これは SF アプリケーションを開発するのに有用である．
 netfilter は，パケットのフィルタリングやロギング，NAT，NAPT，やその他のパケットマングリングを可能にするフレームワークである．
 netfilter は，iptables や nftables といったパケット処理アプリケーションの内部の実装に使われている．
 iptables や nftables といった，netfilter を基盤として実装されたアプリケーションのことを，本論文では netfilter-based アプリケーションと呼ぶ．
 netfilter-based アプリケーションの例として，iptables や nftables 以外にも，conntract-tools\cite{conntract-tools} や snort\cite{snort} といったアプリケーションも存在する．
 
-netfilter の仕組みを使うと，任意のカーネルモジュールは Linux kernel のネットワークスタック上で定義された特定の場所に場所にコールバック関数を設定できる．
-カーネルモジュールとは，Linux カーネルのソースコードそのものを書き換えず，かつマシンの再起動を必要としない Linux kernel の機能を拡張するプログラムのことである．
+netfilter の仕組みを使うと，任意のカーネルモジュールは Linux カーネルのネットワークスタック上で定義された特定の場所に場所にコールバック関数を設定できる．
+カーネルモジュールとは，Linux カーネルのソースコードそのものを書き換えず，かつマシンの再起動を必要としない Linux カーネルの機能を拡張するプログラムのことである．
 一般的なユーザ定義のアプリケーションはユーザ空間で動作するため，カーネル空間で特定のプログラムを実行することはできない．
 しかし，カーネルモジュールとして動作するプログラムは，カーネル空間で動作する．
-つまり，開発者はカーネルモジュールを開発することで Linux kernel に機能を追加することができる．
+つまり，開発者はカーネルモジュールを開発することで Linux カーネルに機能を追加することができる．
 
 netfilter によってコールバック関数を設定できるポイントの一覧を，図~\ref*{fig:nf-hooks} として示す．
 なお，この図は wiki.nftables.org より引用した図である．
@@ -47,7 +47,7 @@ Forward Hook にのみ特定のパケットをフィルタリングするコー�
 \section{SRv6 と SF としての netfilter 統合手法}
 \label{section:netfilter-as-nf}
 Linux netfilter と SRv6 を利用して SFC をデプロイすることは有用な手法であるように思えるが，実際には問題が存在する．
-章~\ref*{section:linux-and-netfilter}で述べたように，Linux kernel には SRv6 の機能が実装されており，netfilter は SF アプリケーションの開発に有用である．
+章~\ref*{section:linux-and-netfilter}で述べたように，Linux カーネルには SRv6 の機能が実装されており，netfilter は SF アプリケーションの開発に有用である．
 しかし，netfilter は SRH でカプセル化された内部のパケットに対して netfilter hook point を適用できない．
 これは転送するパケットのソースアドレスを書き換える NAT 操作を SRv6 パケットの内部に適用しようとしても，SRH でカプセル化されているために通常のパケットと同じ操作では NAT を適用することができないからである．
 つまり，一般的な IPv4 パケットに対して特定の操作を行うために実装された netfilter-based アプリケーションを SRv6 の内部 IPv4 パケットに対して適用する事はできない．
@@ -85,7 +85,7 @@ SR-Proxy を実行するノードが SRH を取り外して SF ノードにパ�
 
 また，SR-Proxy は SRv6 のビヘイビアとしても提案されており~\cite{filsfils-spring-srv6-interop-02}，End.AS や End.AD や End.AM と呼ばれるビヘイビアがそれに該当する．
 これらは SRv6 ビヘイビアであるため，それら SID は IPv6 アドレスとして表現され，既存のルーティングプロトコルを使ってそれらの SID を広告することができる．
-2024 年 1 月現在，End.AD や End.AM は Linux kernel のメインライン上では実装されておらず，これらの実装はワークインプログレス状態である．
+2024 年 1 月現在，End.AD や End.AM は Linux カーネルのメインライン上では実装されておらず，これらの実装はワークインプログレス状態である．
 Linux で動作する SR-Proxy として，SRv6 ビヘイビア以外の実装も提案されている~\cite{sfc-proxy-bpf,sfc-with-leg-vnf,afxdp-for-srv6}．
 
 しかし，SR-Proxy を利用する方法には，SERA のような SR-aware アプリケーションには存在しないオーバーヘッドが存在する．
@@ -130,13 +130,13 @@ SF から返される内部パケットは任意の宛先と送信元を持つ�
 %     \item eBFP とはなにか
 %     \begin{itemize}
 %         \item eBPF を使って NF を作ることができる 
-%         \item 最近では LKM に変わって Linux kernel を拡張する方法としての側面に注目が集まっている
-%         \item eBPF は Virtual Machine で動作するものの Linux kernel に依存する機能も多い
+%         \item 最近では LKM に変わって Linux カーネルを拡張する方法としての側面に注目が集まっている
+%         \item eBPF は Virtual Machine で動作するものの Linux カーネルに依存する機能も多い
 %     \end{itemize}
 %     \item End.eBPF とはなにか
 %     \item eBPF に対して，本研究では netfilter を NF に統合することを目的としている
 %     \begin{itemize}
-%         \item ここで Linux kernel に依存する End ビヘイビアを提案することの妥当性を述べる
+%         \item ここで Linux カーネルに依存する End ビヘイビアを提案することの妥当性を述べる
 %     \end{itemize}
 % \end{itemize}
 

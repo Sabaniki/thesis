@@ -247,8 +247,8 @@ SERA は SRH でカプセル化されたパケットについて，カプセル�
 SRv6 での基本的な転送動作として，End と呼ばれる動作がある．
 SERA は iptables を拡張することで，この End 動作を処理する機能も実装されている．
 ただし，既にLinux カーネルには IPv6 ルーティング，及び SRv6 End 動作に関する処理が実装されている．
-SERA は，Linux kernel に実装されている SRv6 機能を使わずに，独自に改良した iptables アクションによって End 動作を処理する．
-つまり，SERA は Linux kernel 内で統合されている IPv6 ルーティングインフラと SRv6 処理機能を使わずに，独自に拡張した iptables によって SRv6 とフィルタリングサービスとしての NF を統合している．
+SERA は，Linux カーネルに実装されている SRv6 機能を使わずに，独自に改良した iptables アクションによって End 動作を処理する．
+つまり，SERA は Linux カーネル内で統合されている IPv6 ルーティングインフラと SRv6 処理機能を使わずに，独自に拡張した iptables によって SRv6 とフィルタリングサービスとしての NF を統合している．
 
 本論文では，既存の netfilter ベースアプリケーションの実装を変更することなく SRv6 対応 NF として扱えるようにする，End.AN.NF 提案する．
 End.AN.NF は Linux netfilter を NF として扱えるようにしつつ，Linux に実装されている IPv6 ルーティングインフラを活用する．
