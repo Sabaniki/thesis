@@ -14,10 +14,6 @@ End.AN.NF を示す SID は，通常の IPv6 経路として既存のルーテ�
 End.AN.NF は，SRv6 パケットに対して，IPv6 パケットとして netfilter ルールを適用し，かつカプセル化されたインナーパケットに対しても同様に netfilter ルールを適用できる．
 End.AN.NF は，nftables\cite{nftables} や iptables~\cite{iptables} などの netfilter-based アプリケーションを介して設定された，トラフィックに対する選択的なパケット破棄や NAT の適用などを SRH でカプセル化された内部のパケットに対しても適用できる．
 
-\section{Linux カーネルにおけるパケットフォワーディング}
-\label{section:linux-packet-forwarding}
-説明する．
-
 \section{設計}
 \label{section:design}
 netfilterは，トランジットするパケットを Linux ネットワークスタックの IPv6 パケット転送フローに既に存在する netfilter フックポイントを通過させ，かつ SRv6 レイヤに 3 つの netfilter フックポイントを持ち，異なるタイミングでパケットに netfilter ルールを適用する．
@@ -29,16 +25,16 @@ netfilterは，トランジットするパケットを Linux ネットワーク�
 まず，End.AN.NF カーネルに実装した Linux の SRv6 ノードが IPv6 パケットを受信すると，そのカーネルは受信したパケットに prerouting フックを適用し，通常通り宛先 IPv6 アドレスの最長プレフィックスマッチングを行う．
 宛先アドレスが自身の持つ経路表上で End.AN.NF の SID として定義されていた場合，カーネルはパケットを End.AN.NF の実装に渡し，そうでない場合，カーネルは IPv6 レイヤの forward フックと postrouting フックを適用しながら，SRv6 パケットを IPv6 パケットとして解釈し，対応するネクストホップに転送する．
 一方，End.AN.NF は，SRH でカプセル化されたインナーパケットに対して，再度，prerouting フック，forward フック，及び postrouting フックを適用する．
-この 3 つの netfilter フックポイントは，図~\ref*{fig:nf-hooks} で示されている通り，カーネルがあるパケットをトランジットする際に通過する通過するフックポイントである．
+この 3 つの netfilter フックポイントは，図~\ref*{fig:nf-hooks} で示されている通り，カーネルがあるパケットをトランジットする際に IP レイヤで通過するフックポイントである．
 End.AN.NF の段階で netfilter が適用されている間，SRH は End.AN.NF によって隠されるので，netfilter は SRH の処理を考慮する必要がない．
 End.AN.NF が終了すると，外部 IPv6 ヘッダの宛先アドレスは次の SID に置き換えられ，カプセル化されたパケットは Linux の IPv6 パケットフォワーディングプロセスにおける通常の転送パスに戻る．
 
 End.AN.NF は，パケットをマーキングするために SID の \texttt{ARG} フィールドを利用する．
 ARG は SID の下位ビットである~\cite{rfc8986}．
-SRv6 の仕様では，ある End ビヘイビアがその End ビヘイビア固有の用途で \texttt{ARG} を利用することを許可している．
-End.AN.NF では，SID の ARG がマークとして Linux カーネル空間におけるパケットバッファに付加される．
-netfilter ベースのアプリケーションは，パケットバッファ上のマークを照合することで，適用するルールを変更することができる．
-したがって，オペレータが，単一の End.AN.NF SID しか定義されていない場合であっても，NF は ARG に基づいてトラフィックのルールを調整することが可能である．
+SRv6 の仕様上，ある End ビヘイビアがその End ビヘイビア固有の用途で \texttt{ARG} を利用することが許可されている．
+End.AN.NF では，SID の \texttt{ARG} がマークとしてカーネル空間におけるパケットバッファに付加される．
+netfilter-based アプリケーションは，パケットバッファ上のマーク部分を照合することで，適用するルールを変更することができる．
+したがって，オペレータが，単一の End.AN.NF SID しか定義されていない場合であっても，SF アプリケーションは \texttt{ARG} に基づいてトラフィックのルールを調整することが可能である．
 
 アルゴリズム~\ref*{alg:end-an-nf} は，End.AN.NF がパケットを netfilter のフックポイントに渡す方法を示した擬似コードである．
 まず，End.AN.NF は，ARG の長さがこの End.AN.NF SID に指定されている場合，受信したパケットの宛先アドレスから ARG 値を抽出する．
@@ -47,14 +43,13 @@ netfilter ベースのアプリケーションは，パケットバッファ上�
 フックにインストールされたルールが内側のパケットに適用された後，End.AN.NF は，パケットバッファの先頭を内側のパケットから外側の SRH に復元し，パケットを次のプロセスに渡す．
 この手順は，図~\ref*{fig:hooks} の赤い長方形で示した3つのフックポイント，prerouting，forward，postrouting に対してそれぞれ適用する．
 
-Linux カーネルは，End ビヘイビアを関数の SID を宛先とするルーティングテーブルエントリとして実装している．
-このメカニズムは seg6local と呼ばれる．
-End.AN.NF は End ビヘイビアの1つであるため，その実装も seg6local を利用している．
+Linux カーネルは，End ビヘイビアを特定の SID を宛先とするルーティングテーブルエントリとして扱う．
+End.AN.NF は End ビヘイビアの1つであるため，その SID も同様にルーティングテーブルエントリにインストールされる．
 図~\ref*{fig:show-route} に示すように，カーネルは他の End ビヘイビアと同様に End.AN.NF を表す SID をルーティングテーブルエントリとして扱っていることが確認できる．
 ルーティングソフトウェアや iproute2 を用いて SID をルーティングテーブルエントリとして追加すると，従来のルーティングプロトコルを用いてカーネルのルーティングテーブルにインストールされた経路を広告することが可能となる．
-実際に FRRouting~\cite{frr} を使用し，カーネル内の End.AN.NF に関連付けられた SID を BGP 経由で他のルータに IPv6 経路として広告できることを確認した．
-End.AN.NF のアーキテクチャは，ルーティング制御に既存のルーティングプロトコルを使用できるため，既存の NF との互換性が高い．
-このアーキテクチャは，Linux netfilter を用いた SR-aware NF の実現方法の一つである．
+実際に Linux 用のソフトウェアルータ実装である FRRouting~\cite{frr} を使用し，カーネル内の End.AN.NF に関連付けられた SID を BGP 経由で他のルータに IPv6 経路として広告できることを確認した．
+End.AN.NF のアーキテクチャは，ルーティング制御に既存のルーティングプロトコルを使用できるため，既存の SF アプリケーションとの互換性が高い．
+このアーキテクチャは，Linux netfilter を用いた SR-aware SF の実現方法の一つである．
 
 \begin{figure}[t]
     \centering
@@ -100,3 +95,20 @@ End.AN.NF のアーキテクチャは，ルーティング制御に既存のル�
     \caption{The modified Linux kernel treats an \texttt{End.AN.NF} SID as an IPv6 routing table entry. We can manage the \texttt{End.AN.NF} routes with the existing tools such as iproute2.}
     \label{fig:show-route}
   \end{figure*}
+
+\section{実装}
+\label{section:implementation}
+End.AN.NF は Linux kernel で動作する SRv6 ビヘイビアである．
+End.AN.NF を実装するためには，Linux kernel の IPv6 フォワーディングの実装，及び SRv6 の実装を理解する必要がある．
+本セクションでは，Linux kernel における SRv6 の実装，及び IPv6 レイヤの netfilter の実装を述べた上で End.AN.NF の実装について説明する．
+% Linux カーネルは，End ビヘイビアを関数の SID を宛先とするルーティングテーブルエントリとして実装している．
+% このメカニズムは seg6local と呼ばれる．
+% End.AN.NF は End ビヘイビアの1つであるため，その実装も seg6local を利用している．
+% 図~\ref*{fig:show-route} に示すように，カーネルは他の End ビヘイビアと同様に End.AN.NF を表す SID をルーティングテーブルエントリとして扱っていることが確認できる．
+% ルーティングソフトウェアや iproute2 を用いて SID をルーティングテーブルエントリとして追加すると，従来のルーティングプロトコルを用いてカーネルのルーティングテーブルにインストールされた経路を広告することが可能となる．
+% 実際に FRRouting~\cite{frr} を使用し，カーネル内の End.AN.NF に関連付けられた SID を BGP 経由で他のルータに IPv6 経路として広告できることを確認した．
+% End.AN.NF のアーキテクチャは，ルーティング制御に既存のルーティングプロトコルを使用できるため，既存の NF との互換性が高い．
+% このアーキテクチャは，Linux netfilter を用いた SR-aware NF の実現方法の一つである．
+
+\subsection{Linux }
+\label{sbsection:linux-packet-forwarding}
