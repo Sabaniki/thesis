@@ -101,6 +101,8 @@ End.AN.NF のアーキテクチャは，ルーティング制御に既存のル�
 End.AN.NF は Linux カーネルで動作する SRv6 ビヘイビアである．
 End.AN.NF を実装するためには，Linux カーネルの IPv6 フォワーディングの実装，及び SRv6 の実装を理解する必要がある．
 本セクションでは，Linux カーネルにおける SRv6 の実装，及び IPv6 レイヤの netfilter の実装を述べた上で End.AN.NF の実装について説明する．
+本研究では linux-5.15.106 に対して End.AN.NF を実装する．
+
 % Linux カーネルは，End ビヘイビアを関数の SID を宛先とするルーティングテーブルエントリとして実装している．
 % このメカニズムは seg6local と呼ばれる．
 % End.AN.NF は End ビヘイビアの1つであるため，その実装も seg6local を利用している．
@@ -110,5 +112,35 @@ End.AN.NF を実装するためには，Linux カーネルの IPv6 フォワー�
 % End.AN.NF のアーキテクチャは，ルーティング制御に既存のルーティングプロトコルを使用できるため，既存の NF との互換性が高い．
 % このアーキテクチャは，Linux netfilter を用いた SR-aware NF の実現方法の一つである．
 
-\subsection{Linux }
+\subsection{Linux における SRv6 ビヘイビアの実装}
 \label{sbsection:linux-packet-forwarding}
+Linux における SRv6 End ビヘイビア や End.DT4 ビヘイビアなどの実装は主に，\textbf{net/ipv6/seg6local.c} に記述されている．
+章~\ref{section:linux-and-netfilter} で述べたように，Linux はカーネルモジュールという仕組みを使うことで Linux のカーネルのコードそのものを書き換えないでも機能を追加実装することができる．
+しかし，seg6local の実装についてはカーネルモジュールとして提供されておらず，Linux カーネルのソースコード内で直接 SRv6 ビヘイビアを実装する手法が取られているため，直接 Linux カーネルのプロトコルスタックの実装を変更する必要がある．
+
+独自の SRv6 ビヘイビアを追加するためには，まず \textbf{net/ipv6/seg6local.c} で定義されている \textbf{seg6\_action\_table} の末尾に要素を追加する必要がある．
+End.AN.NF を実装するために追加した記述を，ソースコード~\ref*{seg6-action-desc} として実際のコードを抜粋したものを示す．
+この \textbf{seg6\_action\_table} は \textbf{seg6\_action\_desc} 構造体の配列である．
+\textbf{seg6\_action\_desc} のフィールドについて，特筆するべきは \textbf{input} フィールド及び \textbf{.slwt\_ops} フィールドである．
+受信したパケットの宛先アドレスが自身の持つ経路表上で，ある SRv6 ビヘイビアとして表現されていた場合，そのパケットは Linux ネットワークスタックの SRv6 レイヤへ到達し，パケットは SRv6 ビヘイビア毎に固有の処理の実装に渡される．
+\textbf{input} フィールドには，最初に渡される SRv6 ビヘイビア毎に固有の関数へのポインタが代入される．
+ソースコード~\ref*{seg6-action-desc} では \textbf{input} フィールドに \textbf{input\_action\_end\_nf} 関数へのポインタが設定されている．この関数の実装については以降で解説する．
+\textbf{slwt\_ops} フィールドには，SID と SRv6 ビヘイビアを経路情報としてルーティングテーブルに
+
+\begin{lstlisting}[caption=Add definition of End.AN.NF to seg6\_action\_table,label=seg6-action-desc]
+static struct seg6_action_desc seg6_action_table[] = {
+  .
+  .
+  .
+  // その他のビヘイビアの定義
+  {
+    .action   = SEG6_LOCAL_ACTION_END_NF,
+    .attrs    = SEG6_F_ATTR(SEG6_LOCAL_NF),
+    .optattrs = SEG6_F_LOCAL_COUNTERS,
+    .input    = input_action_end_nf,
+    .slwt_ops = {
+        .build_state = seg6_end_nf_build,
+    },
+  },
+};
+\end{lstlisting}
