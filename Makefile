@@ -13,7 +13,8 @@ ORIGINAL = $(BASE)-diff$(DIFFTO).tex
 DIFFTEX = $(subst ^,_,$(subst ~,_,$(ORIGINAL)))
 
 # REDPEN := $(if $(REDPEN),$(REDPEN),redpen --conf redpen-conf.xml --result-format xml)
-all: build redpen
+# all: build redpen
+all: build
 
 .PHONY: build
 build: $(MAIN_PDF)

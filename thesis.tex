@@ -32,7 +32,7 @@ pdftitle={RG},%
 \usepackage{listings,./sty/jlisting}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
-
+\usepackage{multicol}
 \def\lstlistingname{ソースコード}
 
 \lstset{%
@@ -105,11 +105,11 @@ pdftitle={RG},%
 \thispagestyle{empty}
 
 
-\input{src/000_abstract.ja}
+\input{src/00_abstract.ja}
 \thispagestyle{plain}
 \clearpage
 
-\input{src/000_abstract.en}
+\input{src/00_abstract.en}
 \thispagestyle{plain}
 \clearpage
 
@@ -121,12 +121,12 @@ pdftitle={RG},%
 \clearpage
 
 \pagenumbering{arabic}
-\input{src/010_introduction.ja}
-\input{src/020_related_works.ja}
-\input{src/030_design_and_impl.ja}
-\input{src/040_evaluation.ja}
-\input{src/050_conclusion.ja}
-\input{src/999_thanks.ja.tex}
+\input{src/01_introduction.ja}
+\input{src/02_related_works.ja}
+\input{src/03_design_and_impl.ja}
+\input{src/04_evaluation.ja}
+\input{src/05_conclusion.ja}
+\input{src/09_thanks.ja.tex}
 
 \renewcommand{\thechapter}{\Alph{chapter}}
 \setcounter{chapter}{0}
@@ -135,6 +135,7 @@ pdftitle={RG},%
 
 \input{bib/biblio}\thispagestyle{plain}%bibtex
 
+\input{src/10_appendix.ja.tex}
 
 \end{document}
 
