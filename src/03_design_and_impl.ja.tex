@@ -1,6 +1,6 @@
 \chapter{提案手法の設計と実装}
 \label{chap:design_and_impl}
-本章では，前提となる Linux カーネルにおけるパケットフォワーディング処理，netfilter に関する知識を解説し，本論文の提案手法についての設計と実装について述べる．
+本章では，前提となる Linux カーネルにおけるパケットフォワーディング処理，netfilter に関する知識を解説し，本研究の提案手法についての設計と実装について述べる．
 
 \section{提案手法}
 \label{section:proposal-method}
@@ -16,9 +16,9 @@ End.AN.NF は，nftables\cite{nftables} や iptables~\cite{iptables} などの n
 
 \section{設計}
 \label{section:design}
-netfilterは，トランジットするパケットを Linux ネットワークスタックの IPv6 パケット転送フローに既に存在する netfilter フックポイントを通過させ，かつ SRv6 レイヤに 3 つの netfilter フックポイントを持ち，異なるタイミングでパケットに netfilter ルールを適用する．
+End.AN.NF は，トランジットするパケットを Linux ネットワークスタックの IPv6 パケット転送フローに既に存在する netfilter フックポイントを通過させ，かつ SRv6 レイヤに 3 つの netfilter フックポイントを持ち，異なるタイミングでパケットに netfilter ルールを適用する．
 図\ref*{fig:hooks} は，トランジットパケットに適用される netfilter のフックのフローを示している．
-受信したあるパケットに対して End.AN.NF が動作する際，そのパケットは 2 段階の netfilter フックが適用される．
+受信したあるパケットに対して End.AN.NF が動作する際，そのパケットには 2 段階の netfilter フックが適用される．
 1 段階目の適用では，SRH を含む外部 IPv6 ヘッダのついたカプセル化されたパケットに対して，その外部 IPv6 ヘッダをターゲットにして実行される．
 これは End.AN.NF が提供するものではなく，SRv6 パケットが IPv6 パケットとして解釈されて転送される際に適用されるものである．
 2つ目の適用では，SRH を含まない，カプセル化された内部パケットの IP ヘッダをターゲットにして実行される．
@@ -30,15 +30,14 @@ End.AN.NF の段階で netfilter が適用されている間，SRH は End.AN.NF
 End.AN.NF が終了すると，外部 IPv6 ヘッダの宛先アドレスは次の SID に置き換えられ，カプセル化されたパケットは Linux の IPv6 パケットフォワーディングプロセスにおける通常の転送パスに戻る．
 
 End.AN.NF は，パケットをマーキングするために SID の \texttt{ARG} フィールドを利用する．
-ARG は SID の下位ビットである~\cite{rfc8986}．
 SRv6 の仕様上，ある End ビヘイビアがその End ビヘイビア固有の用途で \texttt{ARG} を利用することが許可されている．
 End.AN.NF では，SID の \texttt{ARG} がマークとしてカーネル空間におけるパケットバッファに付加される．
 netfilter-based アプリケーションは，パケットバッファ上のマーク部分を照合することで，適用するルールを変更することができる．
 したがって，オペレータが，単一の End.AN.NF SID しか定義されていない場合であっても，SF アプリケーションは \texttt{ARG} に基づいてトラフィックのルールを調整することが可能である．
 
 アルゴリズム~\ref*{alg:end-an-nf} は，End.AN.NF がパケットを netfilter のフックポイントに渡す方法を示した擬似コードである．
-まず，End.AN.NF は，ARG の長さがこの End.AN.NF SID に指定されている場合，受信したパケットの宛先アドレスから ARG 値を抽出する．
-抽出された ARG 値は，マークとしてパケットバッファに付加される．
+まず，End.AN.NF は，\texttt{ARG} の長さがこの End.AN.NF SID に指定されている場合，受信したパケットの宛先アドレスから \texttt{ARG} 値を抽出する．
+抽出された \texttt{ARG} 値は，マークとしてパケットバッファに付加される．
 次に，End.AN.NF はパケットバッファの先頭を外側の SRH から内側のパケットに切り替え，バッファを netfilter フックに渡す．
 フックにインストールされたルールが内側のパケットに適用された後，End.AN.NF は，パケットバッファの先頭を内側のパケットから外側の SRH に復元し，パケットを次のプロセスに渡す．
 この手順は，図~\ref*{fig:hooks} の赤い長方形で示した3つのフックポイント，prerouting，forward，postrouting に対してそれぞれ適用する．
@@ -92,7 +91,7 @@ End.AN.NF のアーキテクチャは，ルーティング制御に既存のル�
   \begin{figure*}[t]
     \centering
     \includegraphics[width=0.95\linewidth]{img/End-FW-show-route.pdf}
-    \caption{The modified Linux カーネルtreats an \texttt{End.AN.NF} SID as an IPv6 routing table entry. We can manage the \texttt{End.AN.NF} routes with the existing tools such as iproute2.}
+    \caption{The modified Linux kernel treats an \texttt{End.AN.NF} SID as an IPv6 routing table entry. We can manage the \texttt{End.AN.NF} routes with the existing tools such as iproute2.}
     \label{fig:show-route}
   \end{figure*}
 
@@ -106,72 +105,73 @@ End.AN.NF を実装するためには，Linux カーネルの SRv6 の実装を�
 本提案手法実装に利用した Linux フレーバーは，ubuntu のミニマムカスタムイメージである．
 カーネルコンフィグを編集し，動作に必要なネットワークドライバや VRF カーネルモジュールなどを有効にしている．
 また，本実装の動作検証はコンテナ技術を利用して仮想的なトポロジを作成して行った．
-コンテナを動作させるにあたり，mobyproject~\cite{mobysh} の提供するカーネルコンフィグのチェックツール~\cite{mobysh}を利用した．
+コンテナを動作させるにあたり，mobyproject~\cite{moby} の提供するカーネルコンフィグのチェックツール~\cite{mobysh}を利用した．
 また，オーディオや GPIO サポートなど，本研究の提案手法の実装及び動作検証，計測に必要のない項目は無効化している．
+
 
 \subsection{Linux における SRv6 ビヘイビアの実装}
 \label{sbsection:linux-packet-forwarding}
-Linux における SRv6 End ビヘイビア や End.DT4 ビヘイビアなどの実装は主に，\textbf{net/ipv6/seg6local.c} に記述されている．
+Linux における SRv6 End ビヘイビア や End.DT4 ビヘイビアなどの実装は主に，\texttt{net/ipv6/seg6local.c} に記述されている．
 章~\ref{section:linux-and-netfilter} で述べたように，Linux はカーネルモジュールという仕組みを使うことで Linux のカーネルのコードそのものを書き換えないでも機能を追加実装することができる．
 しかし，seg6local の実装についてはカーネルモジュールとして提供されておらず，Linux カーネルのソースコード内で直接 SRv6 ビヘイビアを実装する手法が取られているため，直接 Linux カーネルのプロトコルスタックの実装を変更する必要がある．
 
 
-独自の SRv6 ビヘイビアを追加するためには，まず \textbf{net/ipv6/seg6local.c} で定義されている \textbf{seg6\_action\_table} の末尾に要素を追加する必要がある．
+独自の SRv6 ビヘイビアを追加するためには，まず \texttt{net/ipv6/seg6local.c} で定義されている \texttt{seg6\_action\_table} の末尾に要素を追加する必要がある．
 End.AN.NF を実装するために追加した記述を，ソースコード~\ref*{seg6-action-desc} として実際のコードを抜粋したものを示す．
-この \textbf{seg6\_action\_table} は \textbf{seg6\_action\_desc} 構造体の配列である．
-\textbf{seg6\_action\_desc} のフィールドについて，特筆するべきは \textbf{input} フィールド及び \textbf{.slwt\_ops} フィールドである．
-受信したパケットの宛先アドレスが自身の持つルーティングテーブル上で，ある SRv6 ビヘイビアとして表現されていた場合，そのパケットは Linux ネットワークスタックの SRv6 レイヤへ到達し，パケットは SRv6 ビヘイビア毎に固有の処理の実装に渡される．
-\textbf{input} フィールドには，最初に渡される SRv6 ビヘイビア毎に固有の関数へのポインタが代入される．
-ソースコード~\ref*{seg6-action-desc} では \textbf{input} フィールドに \textbf{input\_action\_end\_nf} 関数へのポインタが設定されている．この関数の実装については以降で解説する．
-\textbf{slwt\_ops} フィールドには，SID と SRv6 ビヘイビアを経路情報としてルーティングテーブルに設定するときに呼びされる関数へのポインタが代入される．
-例えば，End.DT4 ではパケットから SRH をデカプセル化したあとにルックアップする VRF を指定するための処理が定義された関数がこのフィールドでは設定されている．
-End.AN.NF の場合，SID の IPv6 アドレスの下位何 bit を \textbf{ARG} として利用するかを指定するための処理が定義された関数である \textbf{seg6\_end\_nf\_build} へのポインタが設定されている．
+この \texttt{seg6\_action\_table} は \texttt{seg6\_action\_desc} 構造体の配列である．
+\texttt{seg6\_action\_desc} のフィールドについて，特筆するべきは \texttt{input} フィールド及び \texttt{slwt\_ops} フィールドである．
+受信したパケットの宛先アドレスが自身の持つルーティングテーブル上で，1 つの SRv6 ビヘイビアとして表現されていた場合，そのパケットは Linux ネットワークスタックの SRv6 レイヤへ到達し，パケットは SRv6 ビヘイビア毎に固有の処理の実装に渡される．
+\texttt{input} フィールドには，最初に渡される SRv6 ビヘイビア毎に固有の関数へのポインタが代入される．
+ソースコード~\ref*{seg6-action-desc} では \texttt{input} フィールドに \texttt{input\_action\_end\_nf} 関数へのポインタが設定されている．この関数の実装については以降で解説する．
+\texttt{slwt\_ops} フィールドには，SID と SRv6 ビヘイビアを経路情報としてルーティングテーブルに設定するときに呼びされる関数へのポインタが代入される．
+例えば End.DT4 の実装では，\texttt{slwt\_ops} フィールドにはパケットから SRH をデカプセル化したあとにルックアップする VRF を指定するための処理が定義された関数が設定されている．
+End.AN.NF の場合，SID の IPv6 アドレスの下位何 bit を \texttt{ARG} として利用するかを指定するための処理が定義された関数である \texttt{seg6\_end\_nf\_build} へのポインタが設定されている．
 
-End.AN.NF は，SID 内部の \textbf{ARG} 部をパケットバッファに埋め込んだ上で，SRH でカプセル化された内部パケットに対して netfilter フックポイントを通過させる．
-これらの処理は \textbf{input\_action\_end\_nf} 関数内で行われる．
-ソースコード~\ref*{input-action1} に，\textbf{input\_action\_end\_nf} 関数内で SID 内部の \textbf{ARG} 部をパケットバッファに埋め込む部分の処理を示す．
-\textbf{slwt} は \textbf{seg6\_local\_lwt} 構造体へのポインタであり，これは \textbf{input\_action\_end\_nf} 関数呼び出し時に引数として渡される．
-\textbf{seg6\_local\_lwt} 構造体には SRv6 ビヘイビアの動作に必要な様々なのフィールドが定義されいている．
+End.AN.NF は，SID 内部の \texttt{ARG} 部をパケットバッファに埋め込んだ上で，SRH でカプセル化された内部パケットに対して netfilter フックポイントを通過させる．
+これらの処理は \texttt{input\_action\_end\_nf} 関数内で行われる．
+ソースコード~\ref*{input-action1} に，\texttt{input\_action\_end\_nf} 関数内で SID 内部の \texttt{ARG} 部をパケットバッファに埋め込む部分の処理を示す．
+\texttt{slwt} は \texttt{seg6\_local\_lwt} 構造体へのポインタであり，これは \texttt{input\_action\_end\_nf} 関数呼び出し時に引数として渡される．
+\texttt{seg6\_local\_lwt} 構造体には SRv6 ビヘイビアの動作に必要な様々なのフィールドが定義されいている．
 パケットが入ってきたインターフェースを表す数値や，End.DT4 などで使うためのルーティングテーブル ID などが含まれている．
-End.AN.NF の実装のために，\textbf{seg6\_local\_lwt} 構造体へ \_\_u8 型の \textbf{arg\_len} というフィールドを追加した．
-このフィールドは SID の \textbf{ARG} 部分の長さを示しており，このフィールドはソースコード~\ref*{seg6-action-desc} の \textbf{slwt\_ops} フィールドに設定された \textbf{seg6\_end\_nf\_build} 関数によって設定される．
-mark の計算及びパケットバッファへの埋め込みは，\textbf{ARG} が定義されているときにのみ行う．
-End.AN.NF において，\textbf{ARG} フィールドの利用は任意である．
-\textbf{ARG} を利用してパケットバッファにマークを付ける必要がない場合，SID を定義する際に \textbf{ARG} の長さを $0$ とすることで \textbf{ARG} は無効になる．
-なお，\textbf{ARG} の長さを負の値にすることはできない．
+End.AN.NF の実装のために，\texttt{seg6\_local\_lwt} 構造体へ \texttt{\_\_u8} 型の \texttt{arg\_len} というフィールドを追加した．
+このフィールドは SID の \texttt{ARG} 部分の長さを示しており，このフィールドはソースコード~\ref*{seg6-action-desc} の \texttt{slwt\_ops} フィールドに設定された \texttt{seg6\_end\_nf\_build} 関数によって設定される．
+mark の計算及びパケットバッファへの埋め込みは，\texttt{ARG} が定義されているときにのみ行う．
+End.AN.NF において，\texttt{ARG} フィールドの利用は任意である．
+\texttt{ARG} を利用してパケットバッファにマークを付ける必要がない場合，SID を定義する際に \texttt{ARG} の長さを $0$ とすることで \texttt{ARG} は無効になる．
+なお，\texttt{ARG} の長さを負の値にすることはできない．
 Linux では，ユーザ空間からカーネルが管理するルーティングテーブルにエントリーを追加する際，NETLINK メッセージでやり取りをする．
 End.AN.NF の SID を経路表に追加する際，特定のフォーマットで NETLINK メッセージを作成する．
-そのメッセージの中には \textbf{ARG} の流さを指定するフィールドが定義されており，受け取ったメッセージは \textbf{seg6\_end\_nf\_build} 関数内でバリデートされ，\textbf{ARG} の長さが負だった場合は経路情報としてルーティングテーブルに載らない．
-ソースコード~\ref*{input-action1} では，\textbf{arg\_len} が $0$ でない，すなわち \textbf{ARG} が有効であるときに if 文内部の処理が実行される．
-計算された結果は Linux 上のパケットバッファを示す \textbf{sk\_buff} 構造体の mark フィールドに設定される．
+そのメッセージの中には \texttt{ARG} の流さを指定するフィールドが定義されており，受け取ったメッセージは \texttt{seg6\_end\_nf\_build} 関数内でバリデートされ，\texttt{ARG} の長さが負だった場合は経路情報としてルーティングテーブルに載らない．
+ソースコード~\ref*{input-action1} では，\texttt{arg\_len} が $0$ でない，すなわち \texttt{ARG} が有効であるときに if 文内部の処理が実行される．
+計算された結果は Linux 上のパケットバッファを示す \texttt{sk\_buff} 構造体の mark フィールドに設定される．
 
-\textbf{input\_action\_end\_nf} 関数の中で，SRH でカプセル化されたパケットを実際に netfilter フックポイントへ通過させている処理を抜粋したコードを，ソースコード~\ref*{input-action2} として示す．
+\texttt{input\_action\_end\_nf} 関数の中で，SRH でカプセル化されたパケットを実際に netfilter フックポイントへ通過させている処理を抜粋したコードを，ソースコード~\ref*{input-action2} として示す．
 End.AN.NF は，SRv6 パケットの SRH 部分を隠蔽して netfilter にパケットを通す．
-ソースコード~\ref*{input-action2} の中で，SRH を隠蔽する，という処理は \textbf{skb\_pull} 関数と \textbf{skb\_reset\_network\_header} 関数の呼び出しによって実現される．
-先に述べた通り，Linux カーネルではパケットバッファを \textbf{sk\_buff} 構造体で管理している．
-Linux カーネルでパケットバッファを参照して各ネットワークレイヤでパケット転送処理を実行する際，処理ごとに \textbf{sk\_buff} 構造体内部の \textbf{head} ポインタを進める必要がある．
-\textbf{head} ポインタは，パケットバファの中で現在処理をしているポインタの位置を示すものである．
+ソースコード~\ref*{input-action2} の中で，SRH を隠蔽する，という処理は \texttt{skb\_pull} 関数と \texttt{skb\_reset\_network\_header} 関数の呼び出しによって実現される．
+先に述べた通り，Linux カーネルではパケットバッファを \texttt{sk\_buff} 構造体で管理している．
+Linux カーネルでパケットバッファを参照して各ネットワークレイヤでパケット転送処理を実行する際，処理ごとに \texttt{sk\_buff} 構造体内部の \texttt{head} ポインタを進める必要がある．
+\texttt{head} ポインタは，パケットバファの中で現在処理をしているポインタの位置を示すものである．
 例えば，Ether レイヤの処理をしているときはこのポインタは Ether フレームの先頭を指す．
-Ether レイヤの処理が終わったあとは，\textbf{head} ポインタの位置を次のレイヤ，カプセル化されていない一般的なパケットであれば IP レイヤへずらす．
-通常このように \textbf{head} ポインタの位置を進める場合は，\textbf{skb\_pull} 関数を利用する．
-\textbf{skb\_pull} 関数の第一引数は \textbf{sk\_buff} 構造体へのポインタであり，第二引数はどれだけ進めるかを整数値で渡す．
-ソースコード~\ref*{input-action2} では，第二引数に \textbf{offset} という変数を渡している．
+Ether レイヤの処理が終わったあとは，\texttt{head} ポインタの位置を次のレイヤ，カプセル化されていない一般的なパケットであれば IP レイヤへずらす．
+通常このように \texttt{head} ポインタの位置を進める場合は，\texttt{skb\_pull} 関数を利用する．
+\texttt{skb\_pull} 関数の第一引数は \texttt{sk\_buff} 構造体へのポインタであり，第二引数はどれだけ進めるかを整数値で渡す．
+ソースコード~\ref*{input-action2} では，第二引数に \texttt{offset} という変数を渡している．
 この変数には，予め SRH の先頭から内部パケットのヘッダまでの長さを計算して代入してある．
-\textbf{skb\_pull} 関数の呼び出し後は，\textbf{skb\_reset\_network\_header} 関数を使用することで，IP レイヤのヘッダ位置を再度アップデートする．
+\texttt{skb\_pull} 関数の呼び出し後は，\texttt{skb\_reset\_network\_header} 関数を使用することで，IP レイヤのヘッダ位置を再度アップデートする．
 
 ソースコード~\ref*{input-action2} の 9 行目から 11 行目は実際に SRH でカプセル化された内部パケットを prerouting フックポイントへ通過させている処理である．
-netfilter フックポイントへの通過は，\textbf{NF\_HOOK} マクロを呼び出すことで実現できる．
-netfilter フックポイントを通過させた後は \textbf{skb\_push} 関数を呼び出しており，この関数は \textbf{skb\_pull} 関数とは対象的に指定した分 \textbf{head} ポインタを前に戻す関数である．
-\textbf{skb\_push} 関数の呼び出し後は，\textbf{skb\_pull} 関数呼び出し時と同様に \textbf{skb\_reset\_network\_header} 関数を呼び出してヘッダの位置をもとに戻している．
+netfilter フックポイントへの通過は，\texttt{NF\_HOOK} マクロを呼び出すことで実現できる．
+netfilter フックポイントを通過させた後は \texttt{skb\_push} 関数を呼び出しており，この関数は \texttt{skb\_pull} 関数とは対象的に指定した分 \texttt{head} ポインタを前に戻す関数である．
+\texttt{skb\_push} 関数の呼び出し後は，\texttt{skb\_pull} 関数呼び出し時と同様に \texttt{skb\_reset\_network\_header} 関数を呼び出してヘッダの位置をもとに戻している．
 
 ソースコード~\ref*{input-action2} の 19 行目，及び 21 行目では，SRv6 End ビヘイビアに対応する処理を行っている．
-\textbf{advance\_nextseg} 関数は，segleft をデクリメントして宛先アドレスを新たな SID で書き換える処理を行う関数である．
-また，\textbf{seg6\_lookup\_nexthop} 関数では，新たな SID で書き換えた宛先アドレスに対するネクスホップを決定している．
+\texttt{advance\_nextseg} 関数は，segleft をデクリメントして宛先アドレスを新たな SID で書き換える処理を行う関数である．
+また，\texttt{seg6\_lookup\_nexthop} 関数では，新たな SID で書き換えた宛先アドレスに対するネクスホップを決定している．
 SRv6 End ビヘイビアが行う転送処理はこの大きく分けてこの 2 つであり，この転送処理は一般的なパケット転送処理とは異なる．
 そのため，SRH でカプセル化された内部パケットにとってのフォワード操作，netfilter の forward フックポイントを適用するタイミングには議論の余地がある．
 本研究では，segleft のデクリメントと新たな SID による宛先アドレスの更新，及び新たな宛先アドレスのネクストホップの決定を，SRH でカプセル化された内部パケットにとってのフォワード操作として解釈し実装する．
 
-ソースコード~\ref*{input-action2} の 26 行目，及び 27 行目では，ソースコード~\ref*{input-action1} と同じように \textbf{ARG} の値をパケットバッファのマークフィールドに設定している．
+ソースコード~\ref*{input-action2} の 26 行目，及び 27 行目では，ソースコード~\ref*{input-action1} と同じように \texttt{ARG} の値をパケットバッファのマークフィールドに設定している．
 パケットバッファのマークフィールドは，End.AN.NF に限らず，汎用的に利用されるフィールドである．
 汎用的であるため，netfilter-based アプリケーションからその値を参照して処理内容を変えることができる．
 ただし，その反面汎用的であるがゆえに他の用途で利用されたり，値が書き換わったりすることがある．
@@ -181,7 +181,6 @@ SRv6 End ビヘイビアが行う転送処理はこの大きく分けてこの 2
 ソースコード~\ref*{input-action2} に示すように，SRv6 パケットに対して End.AN.NF を使って SRH でカプセル化された内部パケットを netfilter フックポイントへ通過させる処理は非常に単純である．
 処理の殆どがポインタの加算及び減算になるように考慮しており，オーバーヘッドがなるべく小さくなるようにしている．
 
-\newpage
 
 \begin{lstlisting}[caption=Add definition of End.AN.NF to seg6\_action\_table,label=seg6-action-desc]
 static struct seg6_action_desc seg6_action_table[] = {
@@ -221,6 +220,7 @@ static int input_action_end_fw(struct sk_buff *skb,
 }
 \end{lstlisting}
 
+\begin{figure*}[t]
 \begin{lstlisting}[caption=Apply netfilter to SRv6 inner packet,label=input-action2]
 static int input_action_end_fw(struct sk_buff *skb,
         struct seg6_local_lwt *slwt)
@@ -277,3 +277,4 @@ static int input_action_end_fw(struct sk_buff *skb,
   .
 }
   \end{lstlisting}
+\end{figure*}

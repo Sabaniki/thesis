@@ -27,11 +27,10 @@ netfilter を使うことで，パケットのフィルタリングや NAT，NAP
 しかし，SRv6 は SRv6 header でカプセル化されているため，カプセル化されている内部のパケットに対して netfilter を適用できない．
 そこで，本論文では End.AN.NF という新しい SRv6 ビヘイビア を提案する．
 End.AN.NF は Linux netfilter を Linux の SRv6 ルーティングインフラストラクチャへ統合する事ができる．
-End.AN.NF は，SRv6 を利用したサービスファンクションチェイニング環境において，
-Linux netfilter を SRv6 に対応した NF として扱えるようにする．
+End.AN.NF は，SRv6 を利用した SFC 環境において，Linux netfilter を SRv6 に対応した SF として扱えるようにする．
 End.AN.NF を利用する際，netfilter を利用して作成されたアプリケーションの実装を変える必要はなく，
 End.AN.NF は SRv6 の基本処理である End ビヘイビアを実行しながら，SRv6 でカプセル化された内部のパケットへ netfilter を適用できる．
-さらに，End.AN.NF は，パケットにマークを付けることができる．
+さらに，End.AN.NF は，パケットバッファにマークを付けることができる．
 したがって，netfilter を利用して作成されたアプリケーションは End.AN.NF がパケットバッファに付与したマークを照合することで，適用するルールを変更できる．
 我々は End.AN.NF を Linux カーネルに実装し，その性能評価を行った．
 計測の結果， End.AN.NF は End.DT4 と H.Encaps を使って SRv6 でカプセル化された内部パケットに netfilter を適用する方法に比べ，
