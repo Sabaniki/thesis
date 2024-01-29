@@ -1,7 +1,7 @@
 \chapter{評価}
 \label{chap:evaluation}
 
-我々が実装した End.AN.NF の性能を評価するために，3つの実験を行った．
+本論文で実装した End.AN.NF の性能を評価するために，4つの実験を行った．
 本章では，3つの計測実験で得られた結果から，提案手法が実用上十分なスループット性能を持っているか，及び実用的なレイテンシに収まっているのかを確認するために Linux に実装されている既存のパケット転送メカニズムと比較し評価する．
 このうち2つはスループットについて，もう1つはレイテンシについて焦点を当てたものである．
 最初の実験では，パケットサイズに基づくスループットを計測し，2つ目の実験では，netfilter-based アプリケーションにおけるフィルタールール数を増加させた際のスループットの変化を評価した．
@@ -32,10 +32,11 @@ VRF で受信されたパケットは，一般的なパケットと同様に net
 したがって，このオーバーヘッドが性能の低下につながることが予想されるため，End.AN.NF の性能は End.DT4 と H.Encaps の組み合わせよりも優れていると予想できる．
 
 3つの実験はすべて同じ構成，同じ環境で行った．
+マシンの構成を，表~\ref*{tbl:machines}に示す．
 100Gbps のリンクで直結された2台のマシンを用意した．
 2台のマシンは同一仕様で，CPU には Intel(R) Xeon(R) Silver 4310 12コア x2，メモリは 64GB DDR4-2666，NIC には Intel E810 100Gbps を搭載している．
 CPU のハイパースレッディング機能は無効に設定した．
-1台はトラフィック・ジェネレータとして，もう1台は SUT (System Under Test) として使用する．
+1台はトラフィック・ジェネレータとして，もう1台は System Under Test (SUT) として使用する．
 トラフィック生成マシンには Ubuntu 22.04 と TRex~\cite{trex} をインストールし，テストトラフィックの生成に使用した．
 一方，SUT マシンには End.AN.NF を実装した Linux カーネル 5.15.106 をインストールし，End.AN.NF と，End.AN.NF の SID を設定するために独自に拡張した iproute2 コマンドを実装した．
 また，2台のマシン間のリンクには2つの VLAN を設定し，テストトラフィックを送信するためのリンクと End.AN.NF 動作後に送信されるトラフィックが論理的に別のリンクになるようにした．
@@ -44,9 +45,25 @@ VLAN は tag 付きで送信し，Linux カーネルのネットワークスタ�
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.95\linewidth]{img/Diff.pdf}
-    \caption{The difference between "End.DT4 and H.Encaps" and End.AN.NF}
+    \caption{End.DT4 と H.Encaps の組み合わせ と End.AN.NF のパケット処理プロセスの差}
     \label{fig:diff}
 \end{figure}
+
+\begin{table}[t]
+  \centering
+  \caption{実験に使用したマシンの構成}
+  \label{tbl:machines}
+  \begin{tabular}{|c|c|c|cc}
+  \cline{1-3}
+          & トラフィックジェネレータ                   & System Under Test                  &  &  \\ \cline{1-3}
+  カーネル & 5.15.0-79-generic              & customized 5.15.106              &  &  \\ \cline{1-3}
+  インストールツール  & TRex v3.03                     & customized iproute2                  &  &  \\ \cline{1-3}
+  CPU  & \multicolumn{2}{c|}{Intel(R) Xeon(R) Silver 4310 12コア x2}           &  &  \\ \cline{1-3}
+  メモリ  & \multicolumn{2}{c|}{64GB DDR4-2666}                                 &  &  \\ \cline{1-3}
+  NIC  & \multicolumn{2}{c|}{Intel E810 100Gbps}                             &  &  \\ \cline{1-3}
+  OS   & \multicolumn{2}{c|}{Ubuntu 22.04.2 LTS} &  &  \\ \cline{1-3}
+  \end{tabular}
+  \end{table}
 
 \section{TRex}
 \label{sec:trex}
@@ -71,7 +88,7 @@ TRex はこのファイルの内容に従って，元となるパケットキャ
 また，どれだけの時間，単位時間あたりにどれだけのパケットを送出するのかといったことも yaml ファイルに定義できる．
 
 また，パケットキャプチャファイルを利用する方法以外にも，Python スクリプトを使ってパケットを生成し送出することができる．
-\textbf{trex\_stl\_lib.api} という Python ライブラリに様々な API が提供されている
+\texttt{trex\_stl\_lib.api} という Python ライブラリに様々な API が提供されている
 このライブラリには SRv6 パケットを生成する関数も提供されており，本論文では，この Python スクリプトを使ってトラフィックを生成する手法でパケットを生成し計測した．
 本論文での計測実験では，IPv4 パケットを特定の SRH でカプセル化する．
 一部の実験時にはレシーブサイドスケーリングの仕組みを効率的に使うため，カプセル化する IPv4 パケットの送信先アドレスをインクリメントした．
@@ -80,7 +97,7 @@ TRex はこのように，SRv6 のパケットの生成，及び内部パケッ�
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.95\linewidth]{img/DPDK.pdf}
-    \caption{Abstract of DPDK}
+    \caption{DPDK アプリケーションの動作概要}
     \label{fig:dpdk}
 \end{figure}
 
@@ -108,7 +125,7 @@ SRH でカプセル化された内部パケットの宛先アドレスは，そ�
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.95\linewidth]{img/RSS.pdf}
-    \caption{Abstract of RSS}
+    \caption{レシーブサイドスケーリングの動作概要}
     \label{fig:rss}
 \end{figure}
 
@@ -159,7 +176,7 @@ End.AN.NF のスループットを End.DT4 と H.Encaps の組み合わせと比
 \begin{figure}[t]
     \centering
     \includegraphics[width=0.95\linewidth]{img/size-throughput.pdf}
-    \caption{Throughput per SRv6 End behaviors and IPv4}
+    \caption{SRv6 End ビヘイビア毎，及び IPv4 のスループット}
     \label{fig:size-thru}
 \end{figure}
 
@@ -185,25 +202,25 @@ nftables は iptables の後継フレームワークであり，iptables の抱�
 自身の 80 番ポートに対する tcp 通信を拒否する，というフィルタールールを定義する設定ファイルを，nftables と iptables それぞれについて確認する．
 nftables 向けの定義ファイルをソースコード~\ref*{nft-filter-rule} に，iptables 向けの定義ファイルをソースコード~\ref*{ipt-filter-rule} に示す．
 
-nftables では，ルールセットの塊を \textbf{table} という単位で管理する．
-この \textbf{table} には予約されている特定の語句や記号を除き，任意の名前で定義することができる．
-テーブルを定義する際は，\textbf{table} \textit{family} \textit{table\_name} のフォーマットで記述する．
-\textit{family} には，IPv4 パケットを対象とするテーブルには \textbf{ip} が，IPv6 パケットが対象であれば \textbf{ip6} が，両方が対象であれば  \textbf{inet} が入る．
+nftables では，ルールセットの塊を \texttt{table} という単位で管理する．
+この \texttt{table} には予約されている特定の語句や記号を除き，任意の名前で定義することができる．
+テーブルを定義する際は，\texttt{table} \textit{family} \textit{table\_name} のフォーマットで記述する．
+\textit{family} には，IPv4 パケットを対象とするテーブルには \texttt{ip} が，IPv6 パケットが対象であれば \texttt{ip6} が，両方が対象であれば  \texttt{inet} が入る．
 対して，iptables は IPv4 と IPv6 のルールを同じ枠組みで書くことができない．
 iptables は IPv4 向けのユーティリティであり，IPv6 には ip6tables を利用する必要がある．
 
 ソースコード~\ref*{nft-filter-rule} 2 行目では，\texttt{deny8080} という名前でチェインが定義されている
-チェインはテーブルの中に任意に数定義することができ，そのフォーマットは \textbf{chain} \textit{chain\_name} である．
+チェインはテーブルの中に任意に数定義することができ，そのフォーマットは \texttt{chain} \textit{chain\_name} である．
 ソースコード~\ref*{nft-filter-rule} 3 行目では，ネットフィルターフックポイントに登録する際に必要な情報が定義されている．
-\textbf{type filter} はチェインのルールがフィルターであることを表している．
-\textbf{hook input priority filter} は，「フィルタールールのデフォルトの優先度で，netfilter の input フックポイントに対象のチェーンを登録する」ということを示している．
+\texttt{type filter} はチェインのルールがフィルターであることを表している．
+\texttt{hook input priority filter} は，「フィルタールールのデフォルトの優先度で，netfilter の input フックポイントに対象のチェーンを登録する」ということを示している．
 図~\ref{fig:nf-hooks} で示したように，input フックポイントは通信のエンドポイントが自分自身である際に通過するフックポイントである．
 ソースコード~\ref*{nft-filter-rule} 4 行目では，実際のルールが定義されている．
 通信プロトコルが tcp であり，宛先ポートが 8080 番であればドロップされる．
 
 対して iptables では，実質的なルールの定義はソースコード~\ref*{nft-filter-rule} の 1 行目及び 2 行目だけである．
-\textbf{*filter} は 対象がフィルタールールであることを示し，\textbf{-A INPUT} でルールを input フックポイントに設定することを示し，以降は宛先ポートが 8080 番の tcp 通信を拒否するように書かれている．
-iptables では，ルールの定義をトランザクションとして管理するため，定義しただけでは変更が反映せれず，\textbf{COMMIT} キーワードで明示的に変更の反映を示す必要がある．
+\texttt{*filter} は 対象がフィルタールールであることを示し，\texttt{-A INPUT} でルールを input フックポイントに設定することを示し，以降は宛先ポートが 8080 番の tcp 通信を拒否するように書かれている．
+iptables では，ルールの定義をトランザクションとして管理するため，定義しただけでは変更が反映せれず，\texttt{COMMIT} キーワードで明示的に変更の反映を示す必要がある．
 
 nftables のルール定義は，iptables のルール定義に比べて記述量が多くなる傾向がある．
 一方で，nftables のルール定義は iptables のルール定義に比べて宣言的で構造化されているため，ルール数が増えたときに人間が読んで理解しやすいフォーマットになっている．
@@ -211,18 +228,19 @@ nftables のルール定義は，iptables のルール定義に比べて記述�
 これは nftables の方が従来の iptables よりも性能面でのアドバンテージが大きいからである．
 
 チェインにはベースチェインとレギュラーチェインの 2 種類が存在し，nftables はひとつひとつのルールをチェインという単位で管理する．
-ベースチェインとはソースコード~\ref*{nft-chain} の 10 行目から 14 行目までで定義されている \textbf{filter\_rule} チェインを指す．
-ベースチェインを宣言すると，そのチェインに対応するルールが netfilter フックポイントに設定されるため，ソースコード~\ref*{nft-chain} の\textbf{filter\_rule} チェイン内のルールは，自身が IPv4 パケットの転送動作をする際は必ず適用される．
-一方で，ソースコード~\ref*{nft-chain} 中の \textbf{remote\_access} チェインと \textbf{rate\_limit} チェインはレギュラーチェインと呼ばれるチェインである．
+ベースチェインとはソースコード~\ref*{nft-chain} の 10 行目から 14 行目までで定義されている \texttt{filter\_rule} チェインを指す．
+ベースチェインを宣言すると，そのチェインに対応するルールが netfilter フックポイントに設定されるため，ソースコード~\ref*{nft-chain} の\texttt{filter\_rule} チェイン内のルールは，自身が IPv4 パケットの転送動作をする際は必ず適用される．
+一方で，ソースコード~\ref*{nft-chain} 中の \texttt{remote\_access} チェインと \texttt{rate\_limit} チェインはレギュラーチェインと呼ばれるチェインである．
 レギュラーチェインには，ソースコード~\ref*{nft-chain} 11 行目のようなルールのタイプと netfilter フックポイントを指定する項目がない．
 レギュラーチェインは，定義しただけではどの netfilter フックポイントにも結び付けられず，実行されない．
 レギュラーチェインは他のチェインからの参照によってのみ実行される．
-例えば，ソースコード~\ref*{nft-chain} の 12 行目，13 行目では，パケットバッファのマークフィールドに特定の値が値が代入されていることを条件とし，\textbf{goto} キーワードを使って指定したチェインを呼び出している．
-このように，レギュラーチェインは \textbf{goto} キーワードで呼び出されて初めて実行される．
+例えば，ソースコード~\ref*{nft-chain} の 12 行目，13 行目では，パケットバッファのマークフィールドに特定の値が値が代入されていることを条件とし，\texttt{goto} キーワードを使って指定したチェインを呼び出している．
+このように，レギュラーチェインは \texttt{goto} キーワードで呼び出されて初めて実行される．
 ソースコード~\ref*{nft-chain} ではベースチェインからレギュラーチェインを呼び出しているが，レギュラーチェインはその処理の中で別のレギュラーチェインを呼び出すこともできる．
 つまり，レギュラーチェインは定義しただけでは実行されず，他のベースチェインまたはレギュラーチェインから参照されて初めて実行される種類のチェインである．
 
-\begin{lstlisting}[caption=Definition of simple filter rule for nftables,label=nft-filter-rule]
+% \begin{lstlisting}[caption=Definition of simple filter rule for nftables,label=nft-filter-rule]
+\begin{lstlisting}[caption=nftables におけるシンプルなフィルタルールの定義例,label=nft-filter-rule]
 table ip filter_sample {
   chain deny8080 {
     type filter hook input priority filter;
@@ -231,13 +249,15 @@ table ip filter_sample {
 }
 \end{lstlisting}
 
-\begin{lstlisting}[caption=Definition of simple filter rule for iptables,label=ipt-filter-rule]
+% \begin{lstlisting}[caption=Definition of simple filter rule for iptables,label=ipt-filter-rule]
+\begin{lstlisting}[caption=iptables におけるシンプルなフィルタルールの定義例,label=ipt-filter-rule]
 *filter
 -A INPUT -p tcp --dport 80 -j DROP
 COMMIT
 \end{lstlisting}
 
-\begin{lstlisting}[caption=An example of a definition: regular chain and base chain,label=nft-chain]
+% \begin{lstlisting}[caption=An example of a definition: regular chain and base chain,label=nft-chain]
+\begin{lstlisting}[caption=nftables におけるレギュラーチェインとベースチェインを利用したルールの定義例,label=nft-chain]
 table ip fw01 {
   chain remote_access {
     tcp dport ssh drop
@@ -292,14 +312,16 @@ netfilter の処理にかかるオーバヘッドは End.AN.NF と End.DT4 と H
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.95\linewidth]{img/rule-throughput.pdf}
-  \caption{Throughput per number of rules of base chains}
+  % \caption{Throughput per number of rules of base chains}
+  \caption{ベースチェインのルールごとのスループットの}
   \label{fig:rule-thru}
 \end{figure}
 
 \begin{figure}[t]
   \centering
   \includegraphics[width=0.95\linewidth]{img/regular-throughput.pdf}
-  \caption{Throughput per number of rules of regular chains}
+  % \caption{Throughput per number of rules of regular chains}
+  \caption{レギュラーチェインのルールごとのスループットの}
   \label{fig:reg-thru}
 \end{figure}
 
@@ -330,8 +352,9 @@ End.AN.NF，End，IPv4 のレイテンシはどれも 16.0 マイクロ秒であ
 よって，End.AN.NF のレイテンシはマイクロ秒単位であれば IPv4 及び End と同じであり，End.DT4 と H.Encaps の組み合わせのレイテンシよりも約 15.8\% 遅延が改善された．
 
 \begin{figure}[t]
-    \centering
-    \includegraphics[width=0.95\linewidth]{img/latency.pdf}
-    \caption{Latency per SRv6 End behaviors and IPv4}
-    \label{fig:rtt}
+  \centering
+  \includegraphics[width=0.95\linewidth]{img/latency.pdf}
+  % \caption{Latency per SRv6 End behaviors and IPv4}
+  \caption{SRv6 End ビヘイビア毎，及び IPv4 のレイテンシ}
+  \label{fig:rtt}
 \end{figure}

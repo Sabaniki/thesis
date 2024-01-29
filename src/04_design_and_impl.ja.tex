@@ -56,12 +56,14 @@ End.AN.NF のアーキテクチャは，ルーティング制御に既存のル�
       width=0.95\linewidth,
       keepaspectratio=true
     ]{img/End-AN-NF-hooks.pdf}
-    \caption{\texttt{End.AN.NF} applies three netfilter hook points, prerouting, forward, and postrouting, to inner packets encapsulated in SRv6.}
+    % \caption{\texttt{End.AN.NF} applies three netfilter hook points, prerouting, forward, and postrouting, to inner packets encapsulated in SRv6.}
+    \caption{Linux カーネルネットワークスタック内における End.AN.NF の動作の流れ}
     \label{fig:hooks}
   \end{figure}
   
   \begin{algorithm*}[t]
-    \caption{Pseudo code of passing a packet to a netfilter hook point in \texttt{End.AN.NF}}
+    % \caption{Pseudo code of passing a packet to a netfilter hook point in \texttt{End.AN.NF}}
+    \caption{End.AN.NF がパケットを netfilter フックポイントへ通過させる処理の擬似コード}
     \small
     \label{alg:end-an-nf}
     \begin{algorithmic}[1]
@@ -91,7 +93,8 @@ End.AN.NF のアーキテクチャは，ルーティング制御に既存のル�
   \begin{figure*}[t]
     \centering
     \includegraphics[width=0.95\linewidth]{img/End-FW-show-route.pdf}
-    \caption{The modified Linux kernel treats an \texttt{End.AN.NF} SID as an IPv6 routing table entry. We can manage the \texttt{End.AN.NF} routes with the existing tools such as iproute2.}
+    % \caption{The modified Linux kernel treats an \texttt{End.AN.NF} SID as an IPv6 routing table entry. We can manage the \texttt{End.AN.NF} routes with the existing tools such as iproute2.}
+    \caption{改良した Linux kernel が End.AN.NF の SID を IPv6 ルーティングエントリとして扱っている様子}
     \label{fig:show-route}
   \end{figure*}
 
@@ -182,7 +185,7 @@ SRv6 End ビヘイビアが行う転送処理はこの大きく分けてこの 2
 処理の殆どがポインタの加算及び減算になるように考慮しており，オーバーヘッドがなるべく小さくなるようにしている．
 
 
-\begin{lstlisting}[caption=Add definition of End.AN.NF to seg6\_action\_table,label=seg6-action-desc]
+\begin{lstlisting}[caption=\texttt{seg6\_action\_table} へ End.AN.NF の定義を追加する実装,label=seg6-action-desc]
 static struct seg6_action_desc seg6_action_table[] = {
   .
   .
@@ -200,7 +203,7 @@ static struct seg6_action_desc seg6_action_table[] = {
 };
 \end{lstlisting}
 
-\begin{lstlisting}[caption=Set a mark to a packet buffer,label=input-action1]
+\begin{lstlisting}[caption=\texttt{ARG} の値をパケットバッファに付加する処理の実装,label=input-action1]
 static int input_action_end_fw(struct sk_buff *skb,
   			struct seg6_local_lwt *slwt)
 {
@@ -221,7 +224,7 @@ static int input_action_end_fw(struct sk_buff *skb,
 \end{lstlisting}
 
 \begin{figure*}[t]
-\begin{lstlisting}[caption=Apply netfilter to SRv6 inner packet,label=input-action2]
+\begin{lstlisting}[caption=SRv6 の内部パケットを netfilter フックポイントへ通過させる処理の実装,label=input-action2]
 static int input_action_end_fw(struct sk_buff *skb,
         struct seg6_local_lwt *slwt)
 {

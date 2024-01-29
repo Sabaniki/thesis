@@ -10,12 +10,29 @@ Abstract of Bachelor's Thesis - Academic Year 2023
 \end{center}
 
 ~ \\
-This paper proposes a new SRv6 End behavior, called End.AN.NF, integrating Linux netfilter as a network function for service function chaining by Segment Routing (SR).
-End.AN.NF allows netfilter-based applications to be executed as SR-Aware applications without modification, as it applies netfilter to inner packets encapsulated in SRv6 while performing the basic SRv6 End behavior.
-Furthermore, End.AN.NF utilizes the argument of the segment identifiers to mark packets.
-Consequently, this enables netfilter-based applications to match the marks on packet buffers and change rules to be applied.
-We implemented End.AN.NF on the Linux kernel and evaluated its performance.
-The evaluation shows that End.AN.NF achieves 27\% higher throughput and 3.0 microseconds lower latency than applying netfilter to SRv6-encapsulated inner packets by End.DT4 and H.Encaps.
+This paper proposes a method for integrating netfilter, a packet manipulation feature of Linux, with Segment Routing over IPv6 (SRv6), a traffic control technology.
+In modern data center networks, virtualization of Network Functions (NFs) using generic servers, virtual machines, and container technologies has become widespread.
+The application of NFs according to a set of rules is called Service Function Chaining (SFC).
+The NFs used in SFC are called Service Functions (SFs), and SFC requires that certain packets be routed through SFs in an arbitrary order.
+Traditional packet routing cannot route a packet through specific nodes in an arbitrary order.
+Therefore, a routing mechanism different from traditional packet routing is required to implement SFC.
+Segment Routing over IPv6 (SRv6) is one of the path control technologies that can implement SFC.
+In SRv6, IP packets are encapsulated with a header called the SRv6 header, which sequentially lists the nodes that the packet will traverse.
+This allows the specification of the nodes that a packet will traverse, regardless of the IP's best path, and thus the order of SF traversal can be arbitrary.
+In addition to controlling traffic, SRv6 can also apply specific operations to transit packets, these specific operations being called ``behaviors''.
+
+The Linux kernel implements a packet processing framework called netfilter, which allows packet filtering, NAT, NAPT, and other packet mangling operations.
+However, netfilter cannot be applied to packets encapsulated in an SRv6 header.
+Therefore, this paper introduces a new SRv6 behavior called End.AN.NF.
+End.AN.NF allows Linux netfilter to be integrated into the Linux SRv6 routing infrastructure.
+It allows Linux netfilter to be treated as an SRv6 compatible SF in an SFC environment using SRv6.
+When using End.AN.NF, there's no need to modify the implementation of applications built with netfilter.
+End.AN.NF can apply netfilter to packets encapsulated in SRv6 while performing the basic processing of SRv6, known as End behavior.
+In addition, End.AN.NF can mark packet buffers, allowing applications built with netfilter to change the rules they apply by checking the mark End.AN.NF adds to the packet buffers.
+This paper implements End.AN.NF in the Linux kernel and evaluates its performance.
+The results show that End.AN.NF achieves 27\% higher throughput and 3.0 microseconds lower latency compared to the method of applying netfilter to packets encapsulated in SRv6 using End.DT4 and H.Encaps.
+
+
 ~ \\
 Keywords : \\
 \underline{1. Service Function Chaining}
