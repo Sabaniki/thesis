@@ -1,0 +1,59 @@
+\chapter{preface}
+\label{chap:introduction}
+
+% \section{本論文の目的と構成}
+% 本論文における以降の構成は次の通りである．
+% \ref*{chap:introduction}章では，本論文の構成について述べ，導入する．
+% \ref*{chap:related_works}章では，サービスファンクションチェイニングに関する前提知識，及びそれを実現する技術について解説し，本論文の概要について述べる．
+% \ref*{chap:design_and_impl}章では，本論文の提案する新たな SRv6 End behavior である End.AN.NF についての詳細な動作，及び実装について述べる．
+% \ref*{chap:evaluation}章では，実装した End.AN.NF について，レイテンシ及びスループットの性能を特定のを変化させながら性能の計測する．
+% \ref*{chap:conclusion}章では，本研究における結論と今後の展望について述べ，End.AN.NF に必要なネットワーク制御プレーンについて検討する．
+
+\section{introduction}
+\label{section:background}
+Service Function Chaining (SFC) is a topic that has been studied in contexts of Software Defined Network (SDN) and Network Function Virtualization (NFV)~\cite{nfv,sfc-on-sdn-nfv-servey,sfc-on-sdn-scenario,imple-sfc-with-openflow}.
+SFC steers packets to Network Functions (NFs) according to predetermined rules about the order and type of NFs to traverse.
+% SDN controllers or routing protocols install rules, and the header of a packet may includes information about these rules.
+SDN controllers or routing protocols install the rules to steer packets, and the headers of packets may include information matched by these rules.
+In SFC, routers require to select the next hops for forwarding packets regardless of the shortest path.
+SFC offers flexible and economical alternatives to today's static environments for Cloud Service providers (CSPs), Application Service Providers (ASPs), and Internet Service Providers (ISPs)~\cite{survey-on-sfc}.
+
+% \sloppy There are several technology candidates that could achieve SFC, such as OpenFlow~\cite{openflow}, Network Service Header (NSH)~\cite{rfc8300}, \fussy MPLS~\cite{rfc8595} and so on
+Several technology candidates could achieve SFC, such as OpenFlow~\cite{openflow}, Network Service Header (NSH)~\cite{rfc8300}, \fussy MPLS~\cite{rfc8595} and so on.
+These technologies can steer packets to intended NFs based on rules, regardless of the shortest path.
+In OpenFlow, a controller installs flow rules to OpenFlow switches explicitly.
+OpenFlow switches forward packets to go through intended NFs with properly managed match the rules.
+This architecture allows flexible path control that is not based on traditional routing protocols.
+NSH identifies an NF by Service Path Identifier (SPI) and Service Index (SI).
+NSH nodes forward packets according to SPI and SI by encapsulation.
+NSH creates a dedicated overlay network called service plane and allows service forwarding to occur within that plane without modifying the underlying network topology. 
+In MPLS, instead of using NSH directly, MPLS label stack contains the hop by hop order to pass through, routers and NFs.
+This approach also achieves steering packets for SFC without modifying the underlying network topology. 
+
+Segment Routing (SR), especially Segment Routing over IPv6 (SRv6), is also one of the technologies used for implementing SFC.
+SR represents every entity, such as links, nodes, and services, in a network by \textit{segments}.
+A header of a packet contains a list of the segments.
+The list of segments indicates a path that the packet should pass through.
+SRv6 uses an IPv6 address as an identifier for a segment, called Segment Identifier (SID).
+In other words, SRv6 leverages IPv6 routing infrastructure as its underlay to deliver packets through arbitrary order of segments.
+SRv6 achieves SFC by assigning segments to the NFs to be performed on those segments, and forwarding packets accordingly.
+
+In SRv6, NFs represented by SIDs would achieve SRv6-based SFC.
+However, it is not obvious how to integrate the behavior of NFs above the SRv6 layer and the underlying IPv6 routing infrastructure.
+For example, let us consider a Network Address Translation (NAT) for IPv4 packets as an NF in an SRv6 network.
+IPv4 packets are encapsulated in outer IPv6 headers involving SR Header (SRH). % これは IPv4 が encapsulated であることを一番先に言いたいので受動態で良さそう
+% An NF receives the encapsulated packets by underlying IPv6 routing and applying IPv4 address translation for inner IPv4 packets, while it transfers the packets to satisfy a requirement of an End behavior.
+If the NAT implementation is not aware of SRv6, it requires SR-proxies~\cite{ietf-spring-sr-service-programming-08} for SR-unaware NFs that introduce additional complexity~\cite{draft-scexp}.
+If the implementation can perform both NAT for inner packets and the SRv6 forwarding behavior simultaneously, it would be layer violation.
+Such an implementation in Linux, SERA~\cite{sera}, acts as an End behavior by modified iptables actions, although the Linux kernel has the capability of performing an End behavior in its IPv6 routing and forwarding infrastructure.
+
+% 問題をどうやって解決したのか．この研究の提案手法の概要，評価した結果などを入れる．
+% abst の中の提案手法にあたる部分を書く． 
+% In this paper, we introduce an SR-Aware service function, called \texttt{End.AN.NF}, which integrates Linux netfilter as a service function while leveraging the IPv6 routing infrastructure of Linux. 
+% \texttt{End.AN.NF} があると，今まで SRv6 に対応していなかった netfilter-based application が SR-Aware application になる
+Along these lines, in this paper, we introduce an SR-Aware service function, called \texttt{End.AN.NF}, which enables existing netfilter-based applications to be SR-Aware applications without modification.
+More specifically, it integrates Linux netfilter as an NF while leveraging the IPv6 routing infrastructure of Linux.
+We designed \texttt{End.AN.NF} to treat netfilter hook points transparent to the SRv6 inner packet.
+We implemented \texttt{End.AN.NF} on the Linux kernel and evaluated its throughput and latency.
+The evaluation shows that \texttt{End.AN.NF} achieves 27\% higher throughput and 3.0 microseconds lower latency than applying netfilter to SRv6-encapsulated inner packets by the combination of \texttt{End.DT4} and \texttt{H.Encaps}.
+In addition, the latency of \texttt{End.AN.NF} is the same as that of \texttt{End} behavior in microsecond resolution.

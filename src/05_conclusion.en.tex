@@ -1,0 +1,9 @@
+\chapter{conclusion}
+\label{chap:conclusion}
+In this paper, we have proposed a new SRv6 End behavior, \texttt{End.AN.NF}, which integrates Linux netfilter and achieves the coexistence with routing protocols, such as BGP.
+\sloppy \texttt{End.AN.NF} allows netfilter-based applications to serve as SR-Aware applications without modification, as \texttt{End.AN.NF} spoofs three netfilter hook points---prerouting, forward, and postrouting---to make them transparent to the SRv6 inner packet.
+Furthermore, \texttt{End.AN.NF} utilizes the \texttt{ARG} field in the SID to mark packets.
+This approach facilitates netfilter-based applications in matching marks on packet buffers, thereby allowing for dynamic rule adjustments.
+We implemented \texttt{End.AN.NF} on the Linux kernel and evaluated its performance.
+As a result, our implementation achieved 27\% higher throughput and 3.0 microseconds lower latency than the combination of \texttt{End.DT4} and \texttt{H.Encaps}, which is one of the ways to apply netfilter rules to an SRv6 inner packet.
+Moreover, the difference in throughput between \texttt{End} and \texttt{End.AN.NF} was under 6\%, indicating that the overhead of \texttt{End.AN.NF} is the acceptable range compared with the most basic End behavior.

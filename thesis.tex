@@ -13,6 +13,7 @@
 \usepackage{here}
 \usepackage{afterpage}
 \usepackage{./sty/ncodeline}
+\usepackage{url}
 %\usepackage[dvipdfmx, colorlinks, breaklinks,%
 \usepackage[dvipdfmx, breaklinks,%
 bookmarks=true, bookmarksnumbered=true,%
@@ -28,10 +29,11 @@ pdftitle={RG},%
 \usepackage{./sty/doxygenorig}
 
 \usepackage{indentfirst}
-\usepackage{url}
 \usepackage{listings,./sty/jlisting}
-
-\def\lstlistingname{プログラム}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{multicol}
+\def\lstlistingname{ソースコード}
 
 \lstset{%
  language={C++},
@@ -72,7 +74,9 @@ pdftitle={RG},%
 \renewcommand{\floatpagefraction}{.99}
 \renewcommand{\bibname}{参考文献}
 
-
+\usepackage{tikz}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=1pt] (char) {#1};}}
 \pagestyle{fancy}
 \lhead[]{}
 
@@ -82,7 +86,7 @@ pdftitle={RG},%
 \makeatother
 
 % タイトル
-\def\title{Netfilter を SR-Aware Network Function として Linux の SRv6 ルーティングインフラへ統合可能にする End.AN.NF の提案}
+\def\title{Linux Netfilter の SRv6 への統合}
 % 英語タイトル
 \def\etitle{Integrating Netfilter into SRv6 Routing Infrastructure of Linux as an SR-Aware Network Function}
 % 著者(日本語)
@@ -101,11 +105,11 @@ pdftitle={RG},%
 \thispagestyle{empty}
 
 
-\input{src/abstract.ja}
+\input{src/00_abstract.ja}
 \thispagestyle{plain}
 \clearpage
 
-\input{src/abstract.en}
+\input{src/00_abstract.en}
 \thispagestyle{plain}
 \clearpage
 
@@ -117,14 +121,12 @@ pdftitle={RG},%
 \clearpage
 
 \pagenumbering{arabic}
-\input{src/010_introduction.ja}
-% \input{src/020_related_works.ja}
-% \input{src/030_design.ja}
-% \input{src/040_implementation.ja}
-% \input{src/050_evaluation.ja}
-% \input{src/060_conclusion.ja}
-% %\input{src/appendix}
-% \input{src/900_acknowledgement.ja}
+\input{src/01_introduction.ja}
+\input{src/02_related_works.ja}
+\input{src/03_design_and_impl.ja}
+\input{src/04_evaluation.ja}
+\input{src/05_conclusion.ja}
+\input{src/09_thanks.ja.tex}
 
 \renewcommand{\thechapter}{\Alph{chapter}}
 \setcounter{chapter}{0}
@@ -133,6 +135,7 @@ pdftitle={RG},%
 
 \input{bib/biblio}\thispagestyle{plain}%bibtex
 
+\input{src/10_appendix.ja.tex}
 
 \end{document}
 

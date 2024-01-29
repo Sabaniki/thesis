@@ -76,5 +76,6 @@
     },
     "workbench.colorCustomizations": {
         "editorCursor.foreground": "#FFFFFF"
-    }
+    },
+    "editor.lineHeight": 1.8
 }

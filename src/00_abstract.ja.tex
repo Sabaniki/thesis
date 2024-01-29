@@ -1,0 +1,46 @@
+卒業論文要旨 - 2023年度（令和5年度）
+\begin{center}
+\begin{large}
+\begin{tabular}{|M{0.97\linewidth}|}
+    \hline
+      \title \\
+    \hline
+\end{tabular}
+\end{large}
+\end{center}
+
+~ \\
+本論文では，Linux の持つパケット操作機能である netfilter を，トラフィック制御技術の1つである SRv6 に統合する手法を提案する．
+昨今のデータセンタネットワークでは，汎用的なサーバや仮想マシン，コンテナ技術を使ってネットワークの機能 (NF) を仮想化する技術が一般化してきている．
+一連のルールに沿って NF を適用することを サービスファンクションチェイニング (SFC) という．
+SFC にデプロイされる NF はサービスファンクション (SF) と呼ばれ，SFC ではあるパケットを任意の順番で SF へ通過させる必要がある．
+従来のパケットルーティングでは，あるパケットを任意の順番で指定したノードを通過させる，ということはでききない．
+よって，SFC の実現のためには従来のパケットルーティングとは別の経路制御機構が必要である．
+SFC を実現できる経路制御技術の1つに Segment Routing over IPv6 (SRv6) という技術がある．
+SRv6 では，SRv6 header と呼ばれるヘッダで IP パケットをカプセル化する．
+また，SRv6 header にはパケットが通過するノードが順番に含まれる．
+これによって，IP 的なベストパスに関係なくパケットが通過するノードを指定可能であるから，任意のルールに従って SF を通る順番を指定できる．
+また，SRv6 はトラフィック制御だけでなく，トランジットするパケットに対して特定の操作を適用でき，この特定の操作の種類のことを\textbf{ビヘイビア}という．
+
+Linux カーネルには netfilter というパケット処理フレームワークが実装されている．
+netfilter を使うことで，パケットのフィルタリングや NAT，NAPT，その他のパケットマングリング操作を適用できる．
+しかし，SRv6 は SRv6 header でカプセル化されているため，カプセル化されている内部のパケットに対して netfilter を適用できない．
+そこで，本論文では End.AN.NF という新しい SRv6 ビヘイビア を提案する．
+End.AN.NF は Linux netfilter を Linux の SRv6 ルーティングインフラストラクチャへ統合する事ができる．
+End.AN.NF は，SRv6 を利用した SFC 環境において，Linux netfilter を SRv6 に対応した SF として扱えるようにする．
+End.AN.NF を利用する際，netfilter を利用して作成されたアプリケーションの実装を変える必要はなく，
+End.AN.NF は SRv6 の基本処理である End ビヘイビアを実行しながら，SRv6 でカプセル化された内部のパケットへ netfilter を適用できる．
+さらに，End.AN.NF は，パケットバッファにマークを付けることができる．
+したがって，netfilter を利用して作成されたアプリケーションは End.AN.NF がパケットバッファに付与したマークを照合することで，適用するルールを変更できる．
+我々は End.AN.NF を Linux カーネルに実装し，その性能評価を行った．
+計測の結果， End.AN.NF は End.DT4 と H.Encaps を使って SRv6 でカプセル化された内部パケットに netfilter を適用する方法に比べ，
+27\% 高いスループット，及び 3.0 マイクロ秒低いレイテンシを実現した．
+~ \\
+キーワード:\\
+\underline{1. Service Function Chaining}
+\underline{2. Segment Routing}
+\underline{3. SRv6}
+\begin{flushright}
+\dept \\
+\author
+\end{flushright}
