@@ -55,7 +55,7 @@ Linux netfilter と SRv6 を利用して SFC をデプロイすることは有�
 SRv6 に対応していない SF アプリケーションのことを，SR-unaware アプリケーションといい，対照的に SRv6 に対応している SF アプリケーションのことを SR-aware アプリケーションという．
 SR-unaware アプリケーションを SRv6 環境で SF として利用する方法はいくつか存在する．以降では，3 つの手法について解説する．
 
-\subsection*{アプリケーションの実装を変更する手法}
+\subsection{アプリケーションの実装を変更する手法}
 \label{sbsection:change-impl}
 最も単純な方法は，アプリケーション自体の実装を変更し，SR-aware アプリケーションにすることである．
 SERA~\cite{sera} は，Linux iptables に統合された SR-aware アプリケーションの実装である．
@@ -67,7 +67,7 @@ SERA のような手法で netfilter-based アプリケーションを SR-aware 
 また，SERA の採用した iptables を拡張するというデザインは，SERA に関連する SID を既存のルーティングインフラに統合することを困難にしている．
 iptables 内のフィルタリングルールとして利用するための SID の情報は，\ref*{section:srv6}章で解説した layer-3 VPN の例とは異なり，既存のルーティングプロトコルを通じて広告することはできない．
 
-\subsection*{SR-Proxy を利用する手法}
+\subsection{SR-Proxy を利用する手法}
 \label{sbsection:use-sr-proxy}
 もう 1 つの方法は，SR-Proxy と呼ばれる手法を適用することである．
 SR-Proxy の概念図を図~\ref*{fig:sr-proxy} として示す．

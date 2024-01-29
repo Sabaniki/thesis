@@ -69,7 +69,7 @@ TE が可能なパケット転送メカニズムとして，いくつかの候�
     \label{fig:exp-src-rtng}
 \end{figure}
 
-\subsection*{OpenFlow}
+\subsection{OpenFlow}
 \label{sbsection:openflow}
 OpenFlow のによるネットワーク構成の概略図を 図~\ref{fig:openflow} に示す．
 OpenFlow では，OpenFlow スイッチと呼ばれる OpenFlow に対応した専用のネットワーク機器をパケットを転送するノードとして使用し，OpenFlow コントローラと呼ばれる専用のマシンが OpenFlow スイッチの経路情報を集中管理する．
@@ -89,7 +89,7 @@ OpenFlow のフローテーブルには，宛先の IP アドレスだけでは�
     \label{fig:openflow}
 \end{figure}
 
-\subsection*{NSH}
+\subsection{NSH}
 \label{sbsection:nsh}
 NSH は，SFC を実現する 1 つの手法として考えられたプロトコルで，NSH と呼ばれるヘッダでパケットをカプセル化する．
 OpenFlow が汎用的なパケット転送アーキテクチャとして考案されたのとは対象的に，NSH は SFC を前提として考案された．
@@ -110,7 +110,7 @@ NSH に対応したノードでは，SF が適用されたパケットに対し�
     \label{fig:nsh}
 \end{figure}
 
-\subsection*{MPLS}
+\subsection{MPLS}
 \label{sbsection:mpls}
 MPLS とは Multiprotocol Label Switching の略称であり，MPLS ヘッダに含まれるラベル情報に基づいてパケットを転送するプロトコルである．
 MPLS ヘッダは Layer 2 ヘッダと Layer 3 ヘッダの間に挿入され，MPLS ヘッダの中にラベル情報を始めとするいくつかのフィールドが埋め込まれる．
@@ -144,7 +144,7 @@ SRv6 ヘッダには通過するネットワーク上のノードの順番がリ
     \label{fig:srv6}
 \end{figure}
 
-\subsection*{SRv6 を利用した layer-3 VPN の構築例と SRv6 によるパケット転送の具体的な動作}
+\subsection{SRv6 を利用した layer-3 VPN の構築例と SRv6 によるパケット転送の具体的な動作}
 \label{sbsection:srv6-vpn}
 
 SRv6 ビヘイビアを組み合わせることで，layer-3 VPN を構成することもできる~\cite{rfc9252}．
@@ -180,7 +180,7 @@ End.DT4 により，パケットから SRH は取り除かれ，PE-1 でカプ�
     \label{fig:srv6-vpn}
 \end{figure}
 
-\subsection*{SRv6 パケットと SID の構造}
+\subsection{SRv6 パケットと SID の構造}
 \label{sbsection:srv6-sid-struct}
 図~\ref*{fig:srv6-packet} に，SRv6 パケットの詳細な構造を示す．
 図~\ref*{fig:srv6-vpn} では，簡単のためにパケット構造の図を簡略化して表現した．
